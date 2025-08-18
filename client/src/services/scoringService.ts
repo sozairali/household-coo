@@ -87,6 +87,40 @@ class ScoringService {
     const sorted = this.sortTasksByDimension(filtered, dimension);
     return sorted[0];
   }
+
+  getDistinctTopTasks(tasks: Task[]): { importance?: Task; urgency?: Task; savings?: Task } {
+    const openTasks = tasks.filter(task => task.status === 'open');
+    const savingsTasks = openTasks.filter(task => task.savingsUsd && task.savingsUsd > 0);
+    
+    // Get sorted lists for each dimension
+    const importanceSorted = this.sortTasksByDimension(openTasks, 'importance');
+    const urgencySorted = this.sortTasksByDimension(openTasks, 'urgency');
+    const savingsSorted = this.sortTasksByDimension(savingsTasks, 'savings');
+    
+    const result: { importance?: Task; urgency?: Task; savings?: Task } = {};
+    const usedTaskIds = new Set<string>();
+    
+    // First pass: assign clearly distinct top tasks
+    if (importanceSorted[0]) {
+      result.importance = importanceSorted[0];
+      usedTaskIds.add(importanceSorted[0].id);
+    }
+    
+    // Find first urgent task that's not already used
+    const urgentTask = urgencySorted.find(task => !usedTaskIds.has(task.id));
+    if (urgentTask) {
+      result.urgency = urgentTask;
+      usedTaskIds.add(urgentTask.id);
+    }
+    
+    // Find first savings task that's not already used
+    const savingsTask = savingsSorted.find(task => !usedTaskIds.has(task.id));
+    if (savingsTask) {
+      result.savings = savingsTask;
+    }
+    
+    return result;
+  }
 }
 
 export const scoringService = new ScoringService();

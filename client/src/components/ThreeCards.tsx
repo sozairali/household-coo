@@ -11,9 +11,7 @@ interface ThreeCardsProps {
 export function ThreeCards({ onViewList, onViewInstructions }: ThreeCardsProps) {
   const tasks = useAppStore((state) => state.tasks);
   
-  const importantTask = scoringService.getTopTaskByDimension(tasks, 'importance');
-  const urgentTask = scoringService.getTopTaskByDimension(tasks, 'urgency');
-  const savingsTask = scoringService.getTopTaskByDimension(tasks, 'savings');
+  const { importance: importantTask, urgency: urgentTask, savings: savingsTask } = scoringService.getDistinctTopTasks(tasks);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12" data-testid="three-cards">

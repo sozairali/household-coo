@@ -228,14 +228,22 @@ export default function SetupPage() {
                             </button>
                           ))}
                         </div>
+                        <p className="text-xs text-gray-400 mt-2">
+                          Select multiple categories that matter to your household
+                        </p>
                         {importantCategories.length > 0 && (
-                          <Button
-                            onClick={() => markStepComplete('priorities')}
-                            className="bg-blue-600 hover:bg-blue-500 text-white"
-                            data-testid="button-save-priorities"
-                          >
-                            Save Priorities
-                          </Button>
+                          <div className="mt-4">
+                            <p className="text-sm text-gray-300 mb-2">
+                              Selected: {importantCategories.length} categories
+                            </p>
+                            <Button
+                              onClick={() => markStepComplete('priorities')}
+                              className="bg-blue-600 hover:bg-blue-500 text-white"
+                              data-testid="button-save-priorities"
+                            >
+                              Save Priorities ({importantCategories.length})
+                            </Button>
+                          </div>
                         )}
                       </div>
                     )}
