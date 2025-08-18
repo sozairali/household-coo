@@ -17,7 +17,7 @@ The application is built using **Next.js with TypeScript** and configured for st
 **Zustand** is used for global state management with **localStorage persistence** to maintain data across sessions. The state includes tasks, user feedback, budget information, integration statuses, and sync timestamps. All data persistence is handled client-side without requiring a backend database.
 
 ### UI/UX Design Patterns
-The interface follows strict **ADHD-friendly design principles**: 4xl headlines as dominant visual elements, small supporting text, generous white space, 80px+ touch targets, and minimal animations. The design uses a three-card spotlight system to reduce cognitive overload while highlighting the most important tasks in each dimension.
+The interface follows strict **ADHD-friendly design principles**: 5xl headlines as dominant visual elements, extra small supporting text, generous white space, 80px+ touch targets, and minimal animations. The design uses a three-card spotlight system to reduce cognitive overload while highlighting the most important tasks in each dimension. The application now uses a **dark mode color scheme** with high contrast white text on dark gray backgrounds for reduced eye strain and improved readability in various lighting conditions.
 
 ### Task Scoring and Prioritization
 Tasks are scored using **mock LLM-based algorithms** with numeric fields for importance (0-100), urgency (0-100), and savings score (0-100). The system includes a feedback mechanism where users can provide thumbs up/down ratings that adjust task scores by ±3 points. Savings tasks are filtered to only show items with positive `savingsUsd` values.

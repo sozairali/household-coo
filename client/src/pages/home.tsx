@@ -65,19 +65,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50" data-testid="page-home">
+    <div className="min-h-screen bg-gray-900" data-testid="page-home">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b-2 border-gray-200 shadow-sm">
+      <header className="sticky top-0 z-50 bg-gray-800 border-b-2 border-gray-600 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold text-gray-900" data-testid="title-app">
+              <h1 className="text-2xl font-bold text-white" data-testid="title-app">
                 Household COO
               </h1>
               <button
                 onClick={handleSync}
                 disabled={isSyncing}
-                className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors min-h-[60px]"
+                className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition-colors min-h-[60px]"
                 data-testid="button-sync"
               >
                 <RefreshCw className={`text-lg w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
@@ -86,7 +86,7 @@ export default function Home() {
             </div>
             
             <div className="flex items-center space-x-6">
-              <div className="text-sm text-gray-600" data-testid="text-last-refresh">
+              <div className="text-sm text-gray-300" data-testid="text-last-refresh">
                 Last refresh: {formatLastRefresh(lastRefreshISO)}
               </div>
               
@@ -94,7 +94,7 @@ export default function Home() {
               
               <button
                 onClick={handleOpenSettings}
-                className="p-3 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg min-h-[60px] min-w-[60px]"
+                className="p-3 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg min-h-[60px] min-w-[60px]"
                 data-testid="button-settings"
                 aria-label="Settings"
               >

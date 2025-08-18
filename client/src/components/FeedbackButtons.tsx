@@ -23,7 +23,7 @@ export function FeedbackButtons({ taskId, dimension, size = 'lg', className = ''
     <div className={`flex space-x-${size === 'lg' ? '8' : '2'} ${className}`}>
       <button
         onClick={() => handleFeedback(1)}
-        className={`${buttonSize} text-green-500 hover:text-green-600 hover:bg-green-50 rounded-full transition-colors`}
+        className={`${buttonSize} text-green-400 hover:text-green-300 hover:bg-green-900 rounded-full transition-colors`}
         data-testid="button-thumbs-up"
         aria-label="Thumbs up"
       >
@@ -31,7 +31,7 @@ export function FeedbackButtons({ taskId, dimension, size = 'lg', className = ''
       </button>
       <button
         onClick={() => handleFeedback(-1)}
-        className={`${buttonSize} text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors`}
+        className={`${buttonSize} text-red-400 hover:text-red-300 hover:bg-red-900 rounded-full transition-colors`}
         data-testid="button-thumbs-down"
         aria-label="Thumbs down"
       >
