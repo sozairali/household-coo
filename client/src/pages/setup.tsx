@@ -77,9 +77,6 @@ export default function SetupPage() {
         ? prev.filter(p => p !== priority)
         : [...prev, priority];
       
-      if (updated.length > 0) {
-        markStepComplete('priorities');
-      }
       return updated;
     });
   };
