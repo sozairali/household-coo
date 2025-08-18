@@ -9,8 +9,8 @@ class PersistenceService {
     const mockTasks: Task[] = [
       {
         "id": "t1",
-        "title": "Pay preschool deposit",
-        "summary": "Email from Sunshine Preschool. Deposit due Aug 25.",
+        "title": "Schedule dentist appointment",
+        "summary": "6-month cleaning reminder from Dr. Wilson's office.",
         "sourceType": "gmail",
         "receivedAt": "2025-08-18T08:10:00-04:00",
         "dueAt": "2025-08-25T17:00:00-04:00",

@@ -91,14 +91,14 @@ export default function ListPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50" data-testid="page-list">
+    <div className="min-h-screen bg-gray-900" data-testid="page-list">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b-2 border-gray-200 shadow-sm">
+      <header className="sticky top-0 z-50 bg-gray-800 border-b-2 border-gray-600 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center space-x-6">
             <button
-              onClick={() => setLocation('/')}
-              className="p-3 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg min-h-[60px] min-w-[60px]"
+              onClick={() => setLocation('/dashboard')}
+              className="p-3 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg min-h-[60px] min-w-[60px]"
               data-testid="button-back"
               aria-label="Back to home"
             >
@@ -106,10 +106,10 @@ export default function ListPage() {
             </button>
             
             <div>
-              <h1 className="text-2xl font-bold text-gray-900" data-testid="title-dimension">
+              <h1 className="text-2xl font-bold text-white" data-testid="title-dimension">
                 {dimensionLabels[dimension]}
               </h1>
-              <p className="text-sm text-gray-600" data-testid="text-dimension-description">
+              <p className="text-sm text-gray-300" data-testid="text-dimension-description">
                 {dimensionDescriptions[dimension]}
               </p>
             </div>
@@ -119,10 +119,10 @@ export default function ListPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+        <div className="bg-gray-800 rounded-2xl shadow-lg border border-gray-600 p-8">
           {/* Filters */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-3xl font-bold text-white">
               {filteredTasks.length} {filteredTasks.length === 1 ? 'Task' : 'Tasks'}
             </h2>
             
@@ -154,7 +154,7 @@ export default function ListPage() {
           {/* Task List */}
           {filteredTasks.length === 0 ? (
             <div className="text-center py-12" data-testid="empty-state">
-              <p className="text-gray-500 text-xl">No tasks match your filters</p>
+              <p className="text-gray-300 text-xl">No tasks match your filters</p>
               <p className="text-gray-400 text-sm mt-2">Try adjusting your filters or check back later</p>
             </div>
           ) : (

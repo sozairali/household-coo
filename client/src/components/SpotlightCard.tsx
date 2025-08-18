@@ -18,9 +18,9 @@ const iconMap = {
 };
 
 const colorMap = {
-  importance: 'bg-blue-100 text-blue-600',
-  urgency: 'bg-yellow-100 text-yellow-600', 
-  savings: 'bg-green-100 text-green-600'
+  importance: 'bg-blue-600 text-white',
+  urgency: 'bg-yellow-500 text-white', 
+  savings: 'bg-green-600 text-white'
 };
 
 const labelMap = {
