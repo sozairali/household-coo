@@ -1,0 +1,303 @@
+Perfect—here’s a revised, copy-paste **master prompt** for Bolt/Lovable that bakes in your feedback (titles, **balance**-based budget, no keyboard shortcuts) and stays **UI-only** for Raspberry Pi kiosk testing.
+
+---
+
+# Build a UI-only “Household COO” kiosk app (static, no backend)
+
+**Goal:** Create a **single-screen** UI that spotlights three items for one household—**Important**, **Urgent**, **Savings**—with simple interactions for user testing. **No real integrations or LLM calls**; simulate states locally. Output a **static site** that runs offline on a Raspberry Pi via **Chromium kiosk**.
+
+## Scope & constraints
+
+* **UI only / static**: No server, no DB. Persist state in `localStorage`.
+* **Kiosk-first**: Large typography, high contrast, minimal motion, big hit targets. No keyboard shortcuts.
+* **LLM behavior is mocked**: show success / timeout / **insufficient balance** states. **No regex fallback** on timeout (show **Connection error**).
+* **Business rules**:
+
+  * Card titles are exactly **“Important”**, **“Urgent”**, **“Savings”**.
+  * Each card has two actions: **View List** and **View Instructions**.
+  * **Savings** shows **savings/credits/refunds only** (requires `savingsUsd > 0`). Bills/penalties belong under **Urgent**, not Savings.
+  * **No auto-archive**. Completed/dismissed remain visible via filters.
+  * **Scoring is “LLM-based”** (represented in mock data as numeric fields).
+  * **Budget is a running balance**, not a daily budget. Users **add funds**; instruction requests **spend** from balance. If balance is insufficient, block the instruction and show **Insufficient balance**.
+* **Timezone**: America/New\_York. Show “Last refresh” in this TZ.
+* **Accessibility**: proper roles/labels, focus rings, high contrast.
+
+## Tech choices
+
+* **Framework**: Next.js + TypeScript + App Router, **static export** (`next.config.js: output: 'export'`).
+* **Styling**: Tailwind CSS + shadcn/ui. Icons: lucide-react.
+* **State**: Zustand (or React Context) persisted to `localStorage`.
+* **No network calls**; simulate delays/errors locally.
+
+## Information architecture
+
+* **Routes**
+
+  * `/` — Home with the **three spotlight cards**, Budget pill, Last refresh, Settings.
+  * `/list/[dimension]` — Ranked list for `importance` | `urgency` | `savings`.
+  * Task detail shown as a **right-side drawer** on both routes.
+
+* **Header (sticky)**
+
+  * Title: “Household COO”
+  * **Sync now** (simulated; updates “Last refresh” and shuffles seeded timestamps)
+  * “Last refresh: {time}”
+  * **Budget pill**: “Balance: \$X.XX”
+  * **Settings** (modal): integrations states + **Add Funds** & ledger + import/export JSON + reset demo
+
+* **Three spotlight cards** (grid, responsive)
+
+  * **Important** | **Urgent** | **Savings**
+  * Each shows: task title, 1–2 chips (Due date; “Save \$xxx” if exists; Source icon), and 👍/👎
+  * Two buttons: **View List** (to `/list/[dimension]`) and **View Instructions**
+  * “View Instructions” opens the drawer with **Instruction panel** (states below)
+
+* **List view** `/list/[dimension]`
+
+  * Sorted by the chosen dimension descending (scores from mock data)
+  * Filters:
+
+    * **Status**: Open (default) | Done | Dismissed | All
+    * **Date range**: All | Last 7 days
+  * Row actions: **How-to** (opens Instruction panel), **Mark Done**, **Dismiss**, 👍/👎 per dimension
+  * Chips per row: Due date (red if past due), **Save \$** (only when `savingsUsd>0`), Source icon (Gmail/WhatsApp)
+
+* **Instruction panel** (drawer)
+
+  * States:
+
+    * **Loading** (skeleton for \~0.8–1.2s)
+    * **Success**: 4–6 concise steps (mocked) + “Open link” button (from task actions) + small **Citations** list (mock URLs/titles)
+    * **Connection error** (simulated timeout) with “Retry” and “Check Settings”
+    * **Insufficient balance**: “Your AI balance is too low. Add funds in Settings.” + button to open Settings
+  * **Important**: On **timeout**, show Connection error and **do not** fall back to regex/heuristics.
+
+* **Settings modal**
+
+  * **Integrations (mock only)**:
+
+    * Gmail: Connected / Needs attention (toggle)
+    * WhatsApp Bot: Connected / Needs attention (toggle)
+    * WhatsApp Bot ID (read-only text + Copy; mock value)
+  * **AI Budget (balance model)**:
+
+    * **Balance:** show current `$`
+    * **Add Funds**: numeric input + “Add” button (creates a credit transaction)
+    * **Cost per instruction** (read-only, default `$0.02`)
+    * **Ledger**: last 10 transactions with type (Add/Spend), amount, timestamp, note
+  * **Data**:
+
+    * Export current state (JSON download)
+    * Import state (upload JSON)
+    * Reset demo data button
+
+## State model (TypeScript)
+
+Create these types under `src/types.ts`:
+
+```ts
+export type Dimension = 'importance' | 'urgency' | 'savings';
+export type SourceType = 'gmail' | 'whatsapp';
+export type TaskStatus = 'open' | 'done' | 'dismissed';
+
+export interface Task {
+  id: string;
+  title: string;
+  summary: string;
+  sourceType: SourceType;
+  receivedAt: string;            // ISO
+  dueAt?: string;                // ISO if known
+  savingsUsd?: number;           // Only for Savings items; undefined for bills/expenses
+  importance: number;            // 0..100 (pretend “LLM-scored”)
+  urgency: number;               // 0..100
+  savingsScore: number;          // 0..100 (only meaningful when savingsUsd>0)
+  status: TaskStatus;
+  actions?: {label: string; url: string}[];
+  citations?: {title: string; url: string}[]; // For Instruction panel (mocked)
+}
+
+export interface Feedback {
+  taskId: string;
+  dimension: Dimension;
+  signal: 1 | -1;                // thumbs up/down
+  ts: string;                    // ISO
+}
+
+export type TxType = 'add' | 'spend';
+export interface BudgetTx { id: string; type: TxType; amountUsd: number; ts: string; note?: string; }
+
+export interface BudgetState {
+  balanceUsd: number;            // current spendable balance
+  totalAddedUsd: number;         // sum of credits
+  totalSpentUsd: number;         // sum of debits
+  costPerInstructionUsd: number; // default 0.02
+  ledger: BudgetTx[];            // most recent first
+}
+
+export interface IntegrationsState {
+  gmailConnected: boolean;
+  whatsappBotConnected: boolean;
+  whatsappBotId: string;
+}
+
+export interface AppState {
+  tasks: Task[];
+  feedback: Feedback[];
+  budget: BudgetState;
+  integrations: IntegrationsState;
+  lastRefreshISO: string;
+}
+```
+
+## Mock services (no network)
+
+Implement as pure front-end modules:
+
+1. `budgetService`
+
+* `get()` returns persisted state.
+* `addFunds(amountUsd, note?)` → increases `balanceUsd` & `totalAddedUsd`; pushes a credit tx.
+* `charge(amountUsd, note?)`:
+
+  * If `balanceUsd >= amountUsd`, decrement and push a debit tx (update `totalSpentUsd`).
+  * Else throw `InsufficientBalanceError`.
+* No daily reset (balance persists until user adds more funds).
+
+2. `llmService` (mock)
+
+* `getInstructions(taskId)`:
+
+  * Calls `budgetService.charge(costPerInstructionUsd, 'Instruction: ' + taskId)`.
+  * Then wait **800–1200ms**; with **10%** random chance throw `ConnectionError` (simulate timeout).
+  * Else return:
+
+    ```ts
+    { steps: string[]; citations: {title:string; url:string}[]; }
+    ```
+* **On ConnectionError**: UI shows **Connection error**; **no fallback**.
+
+3. `scoringService` (mock)
+
+* Sorting uses the numeric fields already on `Task`. For the `savings` dimension, sort by `savingsScore`.
+* Thumbs up/down **locally nudge** the chosen dimension’s score by ±3 (bounded 0..100) and persist.
+
+4. `persistence`
+
+* Save/load entire `AppState` to `localStorage` under key `household-coo:v2`.
+* Provide import/export helpers.
+
+## Mock data (seed)
+
+Seed with at least **8 tasks**; ensure a mix for **Important**, **Urgent**, **Savings**. Include these three and \~5 more in `public/fixtures/tasks.json`:
+
+```json
+[
+  {
+    "id": "t1",
+    "title": "Pay preschool deposit",
+    "summary": "Email from Sunshine Preschool. Deposit due Aug 25.",
+    "sourceType": "gmail",
+    "receivedAt": "2025-08-18T08:10:00-04:00",
+    "dueAt": "2025-08-25T17:00:00-04:00",
+    "importance": 92, "urgency": 78, "savingsScore": 0,
+    "status": "open",
+    "actions": [{"label":"Open email","url":"https://mail.google.com/"}]
+  },
+  {
+    "id": "t2",
+    "title": "Use $150 airline credit (expires Friday)",
+    "summary": "AmAir credit on file from June flight. Use toward fall trip.",
+    "sourceType": "gmail",
+    "receivedAt": "2025-08-17T15:02:00-04:00",
+    "dueAt": "2025-08-22T23:59:00-04:00",
+    "savingsUsd": 150,
+    "importance": 70, "urgency": 65, "savingsScore": 88,
+    "status": "open",
+    "actions": [{"label":"Manage credit","url":"https://example-airline.com"}],
+    "citations": [{"title":"Carrier credit policy","url":"https://example-airline.com/policy"}]
+  },
+  {
+    "id": "t3",
+    "title": "Immunization records upload",
+    "summary": "WhatsApp: 'School needs vax records by Wed'",
+    "sourceType": "whatsapp",
+    "receivedAt": "2025-08-18T07:00:00-04:00",
+    "dueAt": "2025-08-20T17:00:00-04:00",
+    "importance": 95, "urgency": 85, "savingsScore": 0,
+    "status": "open",
+    "actions": [{"label":"School portal","url":"https://school.example/portal"}]
+  }
+]
+```
+
+## Components to generate
+
+* `app/(components)/ThreeCards.tsx`
+* `app/(components)/SpotlightCard.tsx`
+* `app/(components)/BudgetPill.tsx`  ← shows **Balance: \$X.XX**
+* `app/(components)/FeedbackButtons.tsx`
+* `app/(components)/InstructionPanel.tsx`
+* `app/(components)/TaskRow.tsx`
+* `app/(components)/TaskDrawer.tsx`
+* `app/(components)/SettingsModal.tsx`
+* `app/page.tsx` (home)
+* `app/list/[dimension]/page.tsx` (list views)
+* `src/state/store.ts` (Zustand)
+* `src/services/budgetService.ts`
+* `src/services/llmService.ts` (mock; uses charge + random timeout)
+* `src/services/scoringService.ts`
+* `src/services/persistence.ts`
+* `src/types.ts`
+* `public/fixtures/tasks.json` (seed)
+* `KIOSK.md` (how to run on Raspberry Pi)
+* `README.md` (basic usage)
+
+## UI details & copy
+
+* Card titles: **Important**, **Urgent**, **Savings**
+* Card subtitles:
+
+  * Important: “Highest long-term impact”
+  * Urgent: “Closest deadline / avoids penalties”
+  * Savings: “Savings, credits & refunds (no bills)”
+* Buttons: **View List**, **View Instructions**
+* Instruction error: “We couldn’t connect to the assistant. Please retry or check Settings.”
+* Insufficient balance: “Your AI balance is too low. Add funds in Settings.”
+* Chips:
+
+  * Due date: humanized (“Due Wed 5pm”); red if past due
+  * Savings: “Save \$150” (shown only if `savingsUsd>0`)
+  * Source: Gmail/WhatsApp icon
+
+## Acceptance criteria
+
+1. Home shows the **three spotlight cards** with top-1 by each dimension (ignores done/dismissed). Titles exactly **Important**, **Urgent**, **Savings**.
+2. Each card has **View List**, **View Instructions**, and **👍/👎** that locally nudges ordering.
+3. Instruction panel can show **success**, **connection error** (\~10% random), or **insufficient balance** (when balance < cost). **No fallback** on error.
+4. **Savings** card/list only includes tasks with `savingsUsd>0`; bills/penalties never appear there (they surface under **Urgent**).
+5. **No auto-archive**. Done/Dismissed are controlled by filters, not removed.
+6. Settings modal:
+
+   * Toggle Gmail and WhatsApp Bot **Connected**/Needs attention (mock)
+   * Show **WhatsApp Bot ID** + Copy (mock value)
+   * **Add Funds** to increase balance, see **Balance** and **Ledger** (last 10 tx)
+   * Cost per instruction is read-only (default `$0.02`)
+   * Export/Import JSON; Reset demo data
+7. Static export works: `npm run build && npm run export` creates `/out` for offline kiosk.
+
+## Static export & kiosk notes
+
+* `next.config.js`:
+
+  ```js
+  const nextConfig = { output: 'export', images: { unoptimized: true } };
+  export default nextConfig;
+  ```
+* `KIOSK.md` must include exact commands to copy `/out` to the Pi and launch Chromium in kiosk mode:
+
+  * `chromium-browser --kiosk file:///home/pi/household-coo/index.html --incognito --noerrdialogs --disable-session-crashed-bubble`
+  * disable screen blanking and hide cursor; include a sample `systemd` unit.
+
+---
+
+**Deliverables**: a full Next.js project with the components/services above, seeded mock data, and `README.md` + `KIOSK.md`. The UI should be minimal, high-contrast, ADHD-friendly, and ready for Raspberry Pi kiosk testing.
