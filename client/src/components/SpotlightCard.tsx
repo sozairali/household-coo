@@ -1,0 +1,148 @@
+import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail } from 'lucide-react';
+import { Task, Dimension } from '@/types';
+import { FeedbackButtons } from './FeedbackButtons';
+import { format } from 'date-fns';
+import { MessageSquare } from 'lucide-react';
+
+interface SpotlightCardProps {
+  task: Task | undefined;
+  dimension: Dimension;
+  onViewList: (dimension: Dimension) => void;
+  onViewInstructions: (task: Task) => void;
+}
+
+const iconMap = {
+  importance: Star,
+  urgency: AlertTriangle,
+  savings: PiggyBank
+};
+
+const colorMap = {
+  importance: 'bg-blue-100 text-blue-600',
+  urgency: 'bg-yellow-100 text-yellow-600', 
+  savings: 'bg-green-100 text-green-600'
+};
+
+const labelMap = {
+  importance: 'PRIORITY',
+  urgency: 'URGENT',
+  savings: 'SAVINGS'
+};
+
+export function SpotlightCard({ task, dimension, onViewList, onViewInstructions }: SpotlightCardProps) {
+  const Icon = iconMap[dimension];
+  const colorClass = colorMap[dimension];
+  const label = labelMap[dimension];
+
+  const formatDueDate = (dueAt: string) => {
+    const date = new Date(dueAt);
+    const now = new Date();
+    const isOverdue = date < now;
+    
+    return {
+      text: format(date, 'EEE h:mm a').replace(' ', ' '),
+      isOverdue
+    };
+  };
+
+  if (!task) {
+    return (
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
+        <div className="flex justify-between items-start mb-6">
+          <div className={`p-3 rounded-full ${colorClass}`}>
+            <Icon className="text-2xl w-6 h-6" />
+          </div>
+          <div className="text-xs text-gray-500 font-medium">{label}</div>
+        </div>
+        
+        <div className="flex-grow flex items-center justify-center">
+          <p className="text-gray-500 text-xl">No {dimension} tasks</p>
+        </div>
+        
+        <div className="flex justify-end">
+          <button
+            onClick={() => onViewList(dimension)}
+            className="text-sm text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg transition-colors"
+            data-testid="button-view-list"
+          >
+            View List
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const dueDate = task.dueAt ? formatDueDate(task.dueAt) : null;
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
+      {/* Category Icon (top left) */}
+      <div className="flex justify-between items-start mb-6">
+        <div className={`p-3 rounded-full ${colorClass}`}>
+          <Icon className="text-2xl w-6 h-6" />
+        </div>
+        <div className="text-xs text-gray-500 font-medium">{label}</div>
+      </div>
+      
+      {/* Task Title - Extra Large */}
+      <h2 className="text-4xl font-bold text-gray-900 leading-tight mb-4 flex-grow" data-testid="task-title">
+        {task.title}
+      </h2>
+      
+      {/* Task Details */}
+      <div className="space-y-2 mb-6">
+        {dueDate && (
+          <div className="flex items-center space-x-2">
+            <Clock className={`text-sm w-4 h-4 ${dueDate.isOverdue ? 'text-red-500' : 'text-gray-500'}`} />
+            <span className={`text-sm font-medium ${dueDate.isOverdue ? 'text-red-600' : 'text-gray-600'}`} data-testid="task-due-date">
+              Due {dueDate.text}
+            </span>
+          </div>
+        )}
+        
+        {task.savingsUsd && task.savingsUsd > 0 && (
+          <div className="flex items-center space-x-2">
+            <DollarSign className="text-green-600 text-sm w-4 h-4" />
+            <span className="text-sm text-green-600 font-medium" data-testid="task-savings">
+              Save ${task.savingsUsd}
+            </span>
+          </div>
+        )}
+        
+        <div className="flex items-center space-x-2">
+          {task.sourceType === 'gmail' ? (
+            <Mail className="text-blue-600 text-sm w-4 h-4" />
+          ) : (
+            <MessageSquare className="text-green-600 text-sm w-4 h-4" />
+          )}
+          <span className="text-sm text-gray-600" data-testid="task-source">
+            {task.sourceType === 'gmail' ? 'Gmail' : 'WhatsApp'}
+          </span>
+        </div>
+      </div>
+      
+      {/* Large Thumbs Up/Down (centered) */}
+      <div className="flex justify-center mb-6">
+        <FeedbackButtons taskId={task.id} dimension={dimension} size="lg" />
+      </div>
+      
+      {/* Small Action Buttons (right-aligned) */}
+      <div className="flex justify-end space-x-3">
+        <button
+          onClick={() => onViewList(dimension)}
+          className="text-sm text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg transition-colors"
+          data-testid="button-view-list"
+        >
+          View List
+        </button>
+        <button
+          onClick={() => onViewInstructions(task)}
+          className="text-sm text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg transition-colors"
+          data-testid="button-view-instructions"
+        >
+          View Instructions
+        </button>
+      </div>
+    </div>
+  );
+}
