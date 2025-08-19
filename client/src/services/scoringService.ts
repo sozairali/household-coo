@@ -100,7 +100,7 @@ class ScoringService {
     const result: { importance?: Task; urgency?: Task; savings?: Task } = {};
     const usedTaskIds = new Set<string>();
     
-    // First pass: assign clearly distinct top tasks
+    // Assign top tasks ensuring uniqueness across all three categories
     if (importanceSorted[0]) {
       result.importance = importanceSorted[0];
       usedTaskIds.add(importanceSorted[0].id);
@@ -111,12 +111,18 @@ class ScoringService {
     if (urgentTask) {
       result.urgency = urgentTask;
       usedTaskIds.add(urgentTask.id);
+    } else if (urgencySorted.length > 0) {
+      // If all urgent tasks are used, show the top urgent anyway to ensure all cards have content
+      result.urgency = urgencySorted[0];
     }
     
     // Find first savings task that's not already used
     const savingsTask = savingsSorted.find(task => !usedTaskIds.has(task.id));
     if (savingsTask) {
       result.savings = savingsTask;
+    } else if (savingsSorted.length > 0) {
+      // If all savings tasks are used, show the top savings anyway to ensure all cards have content
+      result.savings = savingsSorted[0];
     }
     
     return result;

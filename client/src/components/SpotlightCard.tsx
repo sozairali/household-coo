@@ -29,10 +29,17 @@ const labelMap = {
   savings: 'SAVINGS'
 };
 
+const descriptionMap = {
+  importance: 'Tasks that impact your family\'s wellbeing',
+  urgency: 'Time-sensitive items with deadlines',
+  savings: 'Money-saving opportunities and credits'
+};
+
 export function SpotlightCard({ task, dimension, onViewList, onViewInstructions }: SpotlightCardProps) {
   const Icon = iconMap[dimension];
   const colorClass = colorMap[dimension];
   const label = labelMap[dimension];
+  const description = descriptionMap[dimension];
 
   const formatDueDate = (dueAt: string) => {
     const date = new Date(dueAt);
@@ -49,8 +56,11 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions 
     return (
       <div className="bg-gray-800 rounded-2xl shadow-lg border border-gray-600 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
         <div className="flex justify-between items-start mb-6">
-          <div className={`p-3 rounded-full ${colorClass}`}>
-            <Icon className="text-2xl w-6 h-6" />
+          <div>
+            <div className={`p-3 rounded-full ${colorClass} mb-2`}>
+              <Icon className="text-2xl w-6 h-6" />
+            </div>
+            <p className="text-xs text-gray-400">{description}</p>
           </div>
         </div>
         
@@ -75,10 +85,13 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions 
 
   return (
     <div className="bg-gray-800 rounded-2xl shadow-lg border border-gray-600 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
-      {/* Category Icon (top left) */}
+      {/* Category Icon and Description (top left) */}
       <div className="flex justify-between items-start mb-6">
-        <div className={`p-3 rounded-full ${colorClass}`}>
-          <Icon className="text-2xl w-6 h-6" />
+        <div>
+          <div className={`p-3 rounded-full ${colorClass} mb-2`}>
+            <Icon className="text-2xl w-6 h-6" />
+          </div>
+          <p className="text-xs text-gray-400">{description}</p>
         </div>
       </div>
       
@@ -89,6 +102,18 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions 
       
       {/* Task Details */}
       <div className="space-y-2 mb-6">
+        {/* Source Badge */}
+        <div className="flex items-center space-x-2">
+          {task.sourceType === 'gmail' ? (
+            <Mail className="text-blue-400 text-xs w-3 h-3" />
+          ) : (
+            <MessageSquare className="text-green-400 text-xs w-3 h-3" />
+          )}
+          <span className="text-xs text-gray-400" data-testid="task-source">
+            From {task.sourceType === 'gmail' ? 'Email' : 'WhatsApp'}
+          </span>
+        </div>
+        
         {dueDate && (
           <div className="flex items-center space-x-2">
             <Clock className={`text-xs w-3 h-3 ${dueDate.isOverdue ? 'text-red-400' : 'text-gray-400'}`} />

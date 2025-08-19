@@ -21,8 +21,8 @@ export default function SetupPage() {
   const [steps, setSteps] = useState<SetupStep[]>([
     {
       id: 'gmail',
-      title: 'Connect Gmail',
-      description: 'Enter your Gmail address to monitor important emails',
+      title: 'Connect Email',
+      description: 'Enter your email address to monitor important messages',
       icon: Mail,
       completed: false
     },
@@ -59,8 +59,9 @@ export default function SetupPage() {
     ));
   };
 
-  const handleGmailConnect = () => {
-    if (gmailAddress.includes('@gmail.com')) {
+  const handleEmailConnect = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(gmailAddress)) {
       markStepComplete('gmail');
     }
   };
@@ -108,7 +109,7 @@ export default function SetupPage() {
         <div className="space-y-8">
           {steps.map((step, index) => {
             const Icon = step.icon;
-            const isActive = index === 0 || steps[index - 1]?.completed;
+            const isActive = true; // Allow all steps to be accessible in any order
             
             return (
               <div 
@@ -141,29 +142,29 @@ export default function SetupPage() {
                       <div className="space-y-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Gmail Address
+                            Email Address
                           </label>
                           <div className="flex space-x-4">
                             <Input
                               type="email"
-                              placeholder="your.email@gmail.com"
+                              placeholder="your.email@example.com"
                               value={gmailAddress}
                               onChange={(e) => setGmailAddress(e.target.value)}
                               className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 flex-grow"
-                              data-testid="input-gmail"
+                              data-testid="input-email"
                             />
                             <Button
-                              onClick={handleGmailConnect}
-                              disabled={!gmailAddress.includes('@gmail.com')}
+                              onClick={handleEmailConnect}
+                              disabled={!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmailAddress)}
                               className="bg-blue-600 hover:bg-blue-500 text-white min-h-[44px]"
-                              data-testid="button-connect-gmail"
+                              data-testid="button-connect-email"
                             >
                               Connect
                             </Button>
                           </div>
                         </div>
                         <p className="text-xs text-gray-400">
-                          We'll monitor this inbox for important emails and deadlines
+                          AI will monitor this inbox for important messages and deadlines (supports any email provider)
                         </p>
                       </div>
                     )}

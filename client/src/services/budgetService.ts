@@ -26,21 +26,21 @@ class BudgetService {
           type: 'add',
           amountUsd: 15.00,
           ts: new Date().toISOString(),
-          note: 'Initial setup'
+          note: 'Initial AI credits'
         },
         {
           id: nanoid(),
           type: 'spend',
           amountUsd: 0.02,
           ts: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-          note: 'Instruction: t1'
+          note: 'AI analysis: t1'
         },
         {
           id: nanoid(),
           type: 'spend',
           amountUsd: 0.02,
           ts: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          note: 'Instruction: t3'
+          note: 'AI analysis: t3'
         }
       ]
     };
@@ -61,7 +61,7 @@ class BudgetService {
       type: 'add',
       amountUsd,
       ts: new Date().toISOString(),
-      note: note || 'Add funds'
+      note: note || 'Add AI credits'
     };
 
     state.balanceUsd += amountUsd;
@@ -87,7 +87,7 @@ class BudgetService {
       type: 'spend',
       amountUsd,
       ts: new Date().toISOString(),
-      note: note || 'Instruction cost'
+      note: note || 'AI processing cost'
     };
 
     state.balanceUsd -= amountUsd;
