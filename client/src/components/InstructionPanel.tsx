@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ExternalLink, AlertTriangle, Wallet, RotateCcw } from 'lucide-react';
 import { Task, InsufficientBalanceError, ConnectionError } from '@/types';
 import { llmService } from '@/services/llmService';
@@ -60,11 +60,11 @@ export function InstructionPanel({ task, isOpen, onClose, onOpenSettings }: Inst
   };
 
   // Load instructions when panel opens with a task
-  useState(() => {
+  useEffect(() => {
     if (isOpen && task) {
       loadInstructions(task.id);
     }
-  });
+  }, [isOpen, task]);
 
   if (!isOpen) return null;
 
