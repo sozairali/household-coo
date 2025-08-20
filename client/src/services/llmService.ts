@@ -73,16 +73,23 @@ class LLMService {
       }
     };
 
-    // Return appropriate response or default
+    // Return appropriate response or enhanced default
     return mockResponses[taskId] || {
       steps: [
-        'Review the task details carefully',
-        'Gather any required materials or information',
-        'Take action according to the deadline',
-        'Follow up to confirm completion'
+        'Gather all necessary documents, account numbers, and identification before starting',
+        'Log into your online account using a secure connection, or call customer service during business hours',
+        'Navigate to the relevant section (billing, account settings, or service requests) for this specific task',
+        'Read all instructions carefully before proceeding with any changes or payments',
+        'Follow the step-by-step process, taking screenshots or notes for your records',
+        'Complete the required action and save confirmation numbers, emails, or receipts immediately',
+        'Send confirmation to any family members who need to know about this action',
+        'Set a calendar reminder to follow up in 7-10 business days if you don\'t receive expected confirmation',
+        'Update your household budget or task tracking system with the completion status'
       ],
       citations: [
-        { title: 'General task management tips', url: 'https://example.com/tips' }
+        { title: 'Customer Support Portal', url: 'https://example.com/support' },
+        { title: 'Account Management Help Center', url: 'https://example.com/account' },
+        { title: 'Billing and Payment FAQ', url: 'https://example.com/billing-faq' }
       ]
     };
   }

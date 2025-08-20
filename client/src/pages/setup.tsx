@@ -236,10 +236,11 @@ export default function SetupPage() {
                             </p>
                             <Button
                               onClick={() => markStepComplete('priorities')}
-                              className="bg-green-600 hover:bg-green-500 text-white text-lg font-semibold py-3 px-6 border-2 border-green-500 shadow-lg"
+                              className="bg-green-600 hover:bg-green-500 text-white text-xl font-bold py-4 px-8 border-4 border-green-400 shadow-2xl ring-4 ring-green-300 ring-opacity-50 min-h-[64px] w-full"
                               data-testid="button-save-priorities"
                             >
-                              ✓ Save Priorities ({importantCategories.length})
+                              <span className="mr-2 text-2xl">✓</span>
+                              Save Priorities ({importantCategories.length})
                             </Button>
                           </div>
                         )}
