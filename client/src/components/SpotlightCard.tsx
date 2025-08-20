@@ -54,7 +54,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions 
 
   if (!task) {
     return (
-      <div className="bg-gray-800 rounded-2xl shadow-lg border border-gray-600 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
+      <div className="bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-500 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
         <div className="flex justify-between items-start mb-6">
           <div>
             <div className={`p-3 rounded-full ${colorClass} mb-2`}>
@@ -84,7 +84,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions 
   const dueDate = task.dueAt ? formatDueDate(task.dueAt) : null;
 
   return (
-    <div className="bg-gray-800 rounded-2xl shadow-lg border border-gray-600 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
+    <div className="bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-500 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
       {/* Category Icon and Description (top left) */}
       <div className="flex justify-between items-start mb-6">
         <div>

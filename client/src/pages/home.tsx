@@ -15,6 +15,8 @@ export default function Home() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState('');
+  const [syncStep, setSyncStep] = useState(0);
 
   const { 
     loadInitialData, 
@@ -28,8 +30,25 @@ export default function Home() {
 
   const handleSync = async () => {
     setIsSyncing(true);
+    setSyncStep(0);
+    
+    const steps = [
+      'Syncing with email...',
+      'Syncing with WhatsApp...',
+      'Processing messages...',
+      'Done! Tasks updated'
+    ];
+    
+    for (let i = 0; i < steps.length; i++) {
+      setSyncStatus(steps[i]);
+      setSyncStep(i);
+      await new Promise(resolve => setTimeout(resolve, i === steps.length - 1 ? 1000 : 1500));
+    }
+    
     await sync();
-    setTimeout(() => setIsSyncing(false), 1000);
+    setIsSyncing(false);
+    setSyncStatus('');
+    setSyncStep(0);
   };
 
   const handleViewList = (dimension: Dimension) => {
@@ -88,7 +107,7 @@ export default function Home() {
                 data-testid="button-sync"
               >
                 <RefreshCw className={`text-lg w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
-                <span className="font-medium">Sync Now</span>
+                <span className="font-medium">{isSyncing ? syncStatus : 'Sync Now'}</span>
               </button>
             </div>
             
