@@ -72,6 +72,10 @@ export default function Home() {
     }
   };
 
+  const handleMarkComplete = (taskId: string) => {
+    markTaskDone(taskId);
+  };
+
   const formatLastRefresh = (isoString: string) => {
     const date = new Date(isoString);
     const now = new Date();
@@ -136,6 +140,7 @@ export default function Home() {
         <ThreeCards 
           onViewList={handleViewList}
           onViewInstructions={handleViewInstructions}
+          onMarkComplete={handleMarkComplete}
         />
       </main>
 

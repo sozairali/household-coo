@@ -1,14 +1,14 @@
-import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail } from 'lucide-react';
+import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail, MessageSquare, CheckCircle } from 'lucide-react';
 import { Task, Dimension } from '@/types';
 import { FeedbackButtons } from './FeedbackButtons';
 import { format } from 'date-fns';
-import { MessageSquare } from 'lucide-react';
 
 interface SpotlightCardProps {
   task: Task | undefined;
   dimension: Dimension;
   onViewList: (dimension: Dimension) => void;
   onViewInstructions: (task: Task) => void;
+  onMarkComplete: (taskId: string) => void;
 }
 
 const iconMap = {
@@ -35,7 +35,7 @@ const descriptionMap = {
   savings: 'Money-saving opportunities and credits'
 };
 
-export function SpotlightCard({ task, dimension, onViewList, onViewInstructions }: SpotlightCardProps) {
+export function SpotlightCard({ task, dimension, onViewList, onViewInstructions, onMarkComplete }: SpotlightCardProps) {
   const Icon = iconMap[dimension];
   const colorClass = colorMap[dimension];
   const label = labelMap[dimension];
@@ -138,22 +138,35 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions 
         <FeedbackButtons taskId={task.id} dimension={dimension} size="lg" />
       </div>
       
-      {/* Small Action Buttons (right-aligned) */}
-      <div className="flex justify-end space-x-3">
+      {/* Action Buttons */}
+      <div className="flex justify-between items-end">
+        {/* Mark Complete (bottom left) */}
         <button
-          onClick={() => onViewList(dimension)}
-          className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
+          onClick={() => onMarkComplete(task.id)}
+          className="text-sm text-green-300 hover:text-green-200 bg-green-900 hover:bg-green-800 px-4 py-2 rounded-lg transition-colors flex items-center"
+          data-testid="button-mark-complete"
+        >
+          <CheckCircle className="w-4 h-4 mr-1" />
+          Mark Complete
+        </button>
+        
+        {/* Other buttons (bottom right) */}
+        <div className="flex space-x-3">
+          <button
+            onClick={() => onViewList(dimension)}
+            className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
           data-testid="button-view-list"
         >
           View List
         </button>
-        <button
-          onClick={() => onViewInstructions(task)}
-          className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
-          data-testid="button-view-instructions"
-        >
-          View Instructions
-        </button>
+          <button
+            onClick={() => onViewInstructions(task)}
+            className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
+            data-testid="button-view-instructions"
+          >
+            View Instructions
+          </button>
+        </div>
       </div>
     </div>
   );
