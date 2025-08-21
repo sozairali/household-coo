@@ -140,13 +140,12 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
       
       {/* Action Buttons */}
       <div className="flex justify-between items-end">
-        {/* Mark Complete (bottom left) */}
+        {/* Mark Complete (bottom left as clickable text) */}
         <button
           onClick={() => onMarkComplete(task.id)}
-          className="text-sm text-green-300 hover:text-green-200 bg-green-900 hover:bg-green-800 px-4 py-2 rounded-lg transition-colors flex items-center"
+          className="text-sm text-green-400 hover:text-green-300 underline transition-colors"
           data-testid="button-mark-complete"
         >
-          <CheckCircle className="w-4 h-4 mr-1" />
           Mark Complete
         </button>
         
@@ -155,10 +154,10 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
           <button
             onClick={() => onViewList(dimension)}
             className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
-          data-testid="button-view-list"
-        >
-          View List
-        </button>
+            data-testid="button-view-list"
+          >
+            View List
+          </button>
           <button
             onClick={() => onViewInstructions(task)}
             className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"

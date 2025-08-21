@@ -81,11 +81,11 @@ export function InstructionPanel({ task, isOpen, onClose, onOpenSettings }: Inst
           <h2 className="text-xl font-semibold text-white">Task Instructions</h2>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg min-h-[50px] min-w-[50px]"
+            className="p-2 text-white hover:text-gray-300 hover:bg-gray-700 rounded-lg min-h-[50px] min-w-[50px] bg-gray-800 border border-gray-600"
             data-testid="button-close-panel"
             aria-label="Close"
           >
-            <X className="text-xl w-5 h-5" />
+            <X className="w-6 h-6 font-bold" />
           </button>
         </div>
         

@@ -73,7 +73,8 @@ export default function Home() {
   };
 
   const handleMarkComplete = (taskId: string) => {
-    markTaskDone(taskId);
+    // Mark task as done using the store action
+    useAppStore.getState().markTaskDone(taskId);
   };
 
   const formatLastRefresh = (isoString: string) => {
@@ -93,8 +94,8 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-gray-800 border-b-2 border-gray-600 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           {/* Integration Status Banner */}
-          <div className="bg-blue-900 border border-blue-600 rounded-lg p-3 mb-4">
-            <p className="text-blue-100 text-sm text-center">
+          <div className="bg-green-800 border border-green-600 rounded-lg p-3 mb-4">
+            <p className="text-white text-sm text-center font-medium">
               🧠 AI-powered analysis of your Gmail and WhatsApp • Finding the most urgent, important, and financially lucrative tasks
             </p>
           </div>
