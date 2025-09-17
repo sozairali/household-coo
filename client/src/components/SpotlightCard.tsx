@@ -71,10 +71,10 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         <div className="flex justify-end">
           <button
             onClick={() => onViewList(dimension)}
-            className="flex items-center space-x-1 text-sm text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-3 py-2 rounded-lg transition-colors"
+            className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
             data-testid="button-view-list"
           >
-            <List className="w-3 h-3" />
+            <List className="w-4 h-4" />
             <span>View List</span>
           </button>
         </div>
@@ -134,42 +134,42 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         )}
       </div>
       
-      {/* Action Buttons (moved to center) */}
-      <div className="flex justify-between items-center mb-6">
-        {/* Mark Complete (bottom left as proper button with checkmark) */}
+      {/* Action Buttons - Standardized Layout */}
+      <div className="flex items-center justify-between gap-4 mb-6">
+        {/* Primary Action - Mark Complete */}
         <button
           onClick={() => onMarkComplete(task.id)}
-          className="flex items-center space-x-2 text-sm text-green-400 hover:text-green-300 bg-green-900/20 hover:bg-green-900/40 px-3 py-2 rounded-lg transition-colors border border-green-800 min-h-[44px]"
+          className="flex items-center justify-center space-x-2 btn-primary touch-target-large rounded-lg transition-all duration-200 text-sm font-medium"
           data-testid="button-mark-complete"
         >
           <Check className="w-4 h-4" />
           <span>Mark Complete</span>
         </button>
         
-        {/* Other buttons (right side) */}
-        <div className="flex space-x-3">
+        {/* Secondary Actions - Grouped */}
+        <div className="flex gap-3">
           <button
             onClick={() => onViewList(dimension)}
-            className="flex items-center space-x-1 text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
+            className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
             data-testid="button-view-list"
           >
-            <List className="w-3 h-3" />
+            <List className="w-4 h-4" />
             <span>View List</span>
           </button>
           <button
             onClick={() => onViewInstructions(task)}
-            className="flex items-center space-x-1 text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
+            className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
             data-testid="button-view-instructions"
           >
-            <HelpCircle className="w-3 h-3" />
+            <HelpCircle className="w-4 h-4" />
             <span>View Instructions</span>
           </button>
         </div>
       </div>
       
-      {/* Dismiss Button (moved to bottom) */}
+      {/* Dismiss Button (centered at bottom) */}
       <div className="flex justify-center">
-        <DismissButton taskId={task.id} dimension={dimension} />
+        <DismissButton taskId={task.id} dimension={dimension} className="w-[240px]" />
       </div>
     </div>
   );

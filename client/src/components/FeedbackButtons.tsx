@@ -31,7 +31,7 @@ export function DismissButton({ taskId, dimension, className = '' }: DismissButt
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <button
-            className="flex items-center space-x-2 text-sm text-red-400 hover:text-red-300 bg-red-900/20 hover:bg-red-900/40 px-4 py-2 rounded-lg transition-colors border border-red-800"
+            className="flex items-center justify-center space-x-2 btn-destructive touch-target rounded-lg transition-all duration-200 text-sm font-medium"
             data-testid="button-dismiss"
           >
             <X className="w-4 h-4" />
