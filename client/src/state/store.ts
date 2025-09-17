@@ -10,6 +10,8 @@ interface AppStore extends AppState {
   sync: () => Promise<void>;
   updateTask: (taskId: string, updates: Partial<Task>) => void;
   submitFeedback: (taskId: string, dimension: Dimension, signal: 1 | -1) => void;
+  markTaskDone: (taskId: string) => void;
+  dismissTask: (taskId: string) => void;
   updateBudget: () => void;
   toggleIntegration: (integration: 'gmail' | 'whatsapp') => void;
   addFunds: (amount: number) => void;
@@ -124,6 +126,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
     persistenceService.importData(jsonData);
     const state = persistenceService.load();
     set(state);
+  },
+
+  markTaskDone: (taskId: string) => {
+    get().updateTask(taskId, { status: 'done' });
+  },
+
+  dismissTask: (taskId: string) => {
+    get().updateTask(taskId, { status: 'dismissed' });
   },
 
   resetDemo: () => {

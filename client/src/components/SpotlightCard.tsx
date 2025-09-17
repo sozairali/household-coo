@@ -1,6 +1,6 @@
-import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail, MessageSquare, CheckCircle, Check } from 'lucide-react';
+import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail, MessageSquare, Check, List, HelpCircle } from 'lucide-react';
 import { Task, Dimension } from '@/types';
-import { FeedbackButtons } from './FeedbackButtons';
+import { DismissButton } from './FeedbackButtons';
 import { format } from 'date-fns';
 
 interface SpotlightCardProps {
@@ -149,24 +149,26 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         <div className="flex space-x-3">
           <button
             onClick={() => onViewList(dimension)}
-            className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
+            className="flex items-center space-x-1 text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
             data-testid="button-view-list"
           >
-            View List
+            <List className="w-3 h-3" />
+            <span>View List</span>
           </button>
           <button
             onClick={() => onViewInstructions(task)}
-            className="text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
+            className="flex items-center space-x-1 text-xs text-blue-400 hover:text-blue-300 bg-blue-900 hover:bg-blue-800 px-2 py-1 rounded transition-colors"
             data-testid="button-view-instructions"
           >
-            View Instructions
+            <HelpCircle className="w-3 h-3" />
+            <span>View Instructions</span>
           </button>
         </div>
       </div>
       
-      {/* Thumbs Up/Down Rating (moved to bottom) */}
+      {/* Dismiss Button (moved to bottom) */}
       <div className="flex justify-center">
-        <FeedbackButtons taskId={task.id} dimension={dimension} size="lg" />
+        <DismissButton taskId={task.id} dimension={dimension} />
       </div>
     </div>
   );
