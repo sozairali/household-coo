@@ -7,27 +7,23 @@ interface FeedbackButtonsProps {
   dimension: Dimension;
   size?: 'sm' | 'lg';
   className?: string;
-  showComplete?: boolean;
 }
 
-export function FeedbackButtons({ taskId, dimension, size = 'lg', className = '', showComplete = true }: FeedbackButtonsProps) {
+export function FeedbackButtons({ taskId, dimension, size = 'lg', className = '' }: FeedbackButtonsProps) {
   const submitFeedback = useAppStore((state) => state.submitFeedback);
 
   const handleFeedback = (signal: 1 | -1) => {
     submitFeedback(taskId, dimension, signal);
   };
 
-  const handleMarkComplete = () => {
-    // TODO: Implement task completion logic
-    console.log('Mark task complete:', taskId);
-  };
 
   const iconSize = size === 'lg' ? 'text-3xl' : 'text-lg';
   const buttonSize = size === 'lg' ? 'min-h-[80px] min-w-[80px] p-4' : 'min-h-[50px] min-w-[50px] p-2';
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
-      <div className={`flex space-x-${size === 'lg' ? '8' : '2'} ${showComplete ? 'mb-4' : ''}`}>
+      <p className="text-xs text-gray-400 mb-4">Rate the quality of this recommendation</p>
+      <div className={`flex space-x-${size === 'lg' ? '8' : '2'}`}>
         <button
           onClick={() => handleFeedback(1)}
           className={`${buttonSize} text-green-400 hover:text-green-300 hover:bg-green-900 rounded-full transition-colors flex items-center justify-center`}
@@ -47,20 +43,6 @@ export function FeedbackButtons({ taskId, dimension, size = 'lg', className = ''
           <ThumbsDown className={iconSize} />
         </button>
       </div>
-      
-      {showComplete && (
-        <div className="text-center">
-          <p className="text-xs text-gray-400 mb-2">Rate the quality of this recommendation</p>
-          <button
-            onClick={handleMarkComplete}
-            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-            data-testid="button-mark-complete"
-          >
-            <CheckCircle2 className="w-4 h-4" />
-            <span>Mark Complete</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail, MessageSquare, CheckCircle } from 'lucide-react';
+import { Star, AlertTriangle, PiggyBank, Clock, DollarSign, Mail, MessageSquare, CheckCircle, Check } from 'lucide-react';
 import { Task, Dimension } from '@/types';
 import { FeedbackButtons } from './FeedbackButtons';
 import { format } from 'date-fns';
@@ -133,23 +133,19 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         )}
       </div>
       
-      {/* Large Thumbs Up/Down (centered) */}
-      <div className="flex justify-center mb-6">
-        <FeedbackButtons taskId={task.id} dimension={dimension} size="lg" />
-      </div>
-      
-      {/* Action Buttons */}
-      <div className="flex justify-between items-end">
-        {/* Mark Complete (bottom left as clickable text) */}
+      {/* Action Buttons (moved to center) */}
+      <div className="flex justify-between items-center mb-6">
+        {/* Mark Complete (bottom left as clickable text with checkmark) */}
         <button
           onClick={() => onMarkComplete(task.id)}
-          className="text-sm text-green-400 hover:text-green-300 underline transition-colors"
+          className="flex items-center space-x-2 text-sm text-green-400 hover:text-green-300 underline transition-colors"
           data-testid="button-mark-complete"
         >
-          Mark Complete
+          <Check className="w-4 h-4" />
+          <span>Mark Complete</span>
         </button>
         
-        {/* Other buttons (bottom right) */}
+        {/* Other buttons (right side) */}
         <div className="flex space-x-3">
           <button
             onClick={() => onViewList(dimension)}
@@ -166,6 +162,11 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
             View Instructions
           </button>
         </div>
+      </div>
+      
+      {/* Thumbs Up/Down Rating (moved to bottom) */}
+      <div className="flex justify-center">
+        <FeedbackButtons taskId={task.id} dimension={dimension} size="lg" />
       </div>
     </div>
   );
