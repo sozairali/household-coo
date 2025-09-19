@@ -66,12 +66,12 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
             <div className={`p-3 rounded-full ${colorClass} mb-2`}>
               <Icon className="text-2xl w-6 h-6" />
             </div>
-            <p className="text-xs text-gray-400">{description}</p>
+            <p className="text-xs task-description">{description}</p>
           </div>
         </div>
         
         <div className="flex-grow flex items-center justify-center">
-          <p className="text-gray-400 text-xl">No {dimension} tasks</p>
+          <p className="task-meta-text text-xl font-medium">No {dimension} tasks</p>
         </div>
         
         <div className="flex justify-end">
@@ -98,7 +98,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
           <div className={`p-3 rounded-full ${colorClass} mb-2`}>
             <Icon className="text-2xl w-6 h-6" />
           </div>
-          <p className="text-xs text-gray-400">{description}</p>
+          <p className="text-xs task-description">{description}</p>
         </div>
       </div>
       
@@ -116,7 +116,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
           ) : (
             <MessageSquare className="text-green-400 text-xs w-3 h-3" />
           )}
-          <span className="text-xs text-gray-400" data-testid="task-source">
+          <span className="text-xs task-meta-text" data-testid="task-source">
             From {task.sourceType === 'gmail' ? 'Email' : 'WhatsApp'}
           </span>
         </div>
@@ -124,7 +124,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         {dueDate && (
           <div className="flex items-center space-x-2">
             <Clock className={`text-xs w-3 h-3 ${dueDate.isOverdue ? 'text-red-400' : 'text-gray-400'}`} />
-            <span className={`text-xs ${dueDate.isOverdue ? 'text-red-400' : 'text-gray-400'}`} data-testid="task-due-date">
+            <span className={`text-xs ${dueDate.isOverdue ? 'text-red-400' : 'task-meta-text'}`} data-testid="task-due-date">
               Due {dueDate.text}
             </span>
           </div>
@@ -133,7 +133,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         {task.savingsUsd && task.savingsUsd > 0 && (
           <div className="flex items-center space-x-2">
             <DollarSign className="text-green-400 text-xs w-3 h-3" />
-            <span className="text-xs text-green-400" data-testid="task-savings">
+            <span className="text-xs text-emerald-400 font-medium" data-testid="task-savings">
               Save ${task.savingsUsd}
             </span>
           </div>
