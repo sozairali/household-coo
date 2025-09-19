@@ -60,7 +60,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
 
   if (!task) {
     return (
-      <div className={`${cardClassMap[dimension]} card-container rounded-2xl shadow-lg p-8 flex flex-col`} data-testid={`card-${dimension}`}>
+      <div className={`${cardClassMap[dimension]} rounded-2xl shadow-lg p-6 flex flex-col min-h-[450px]`} data-testid={`card-${dimension}`}>
         <div className="flex justify-between items-start mb-6">
           <div>
             <div className={`p-3 rounded-full ${colorClass} mb-2`}>
@@ -74,10 +74,10 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
           <p className="task-meta-text text-xl font-medium">No {dimension} tasks</p>
         </div>
         
-        <div className="flex justify-end">
+        <div className="flex-shrink-0 pt-4">
           <button
             onClick={() => onViewList(dimension)}
-            className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
+            className="flex items-center justify-center space-x-2 btn-secondary rounded-lg transition-all duration-200 text-sm font-medium h-10 w-full"
             data-testid="button-view-list"
           >
             <List className="w-4 h-4" />
@@ -91,7 +91,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
   const dueDate = task.dueAt ? formatDueDate(task.dueAt) : null;
 
   return (
-    <div className={`${cardClassMap[dimension]} card-container rounded-2xl shadow-lg p-8 flex flex-col`} data-testid={`card-${dimension}`}>
+    <div className={`${cardClassMap[dimension]} rounded-2xl shadow-lg p-6 flex flex-col min-h-[450px]`} data-testid={`card-${dimension}`}>
       {/* Category Icon and Description (top left) */}
       <div className="flex justify-between items-start mb-6">
         <div>
@@ -103,12 +103,12 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
       </div>
       
       {/* Task Title - Extra Large */}
-      <h2 className="task-title text-5xl font-bold text-white leading-tight mb-4" data-testid="task-title">
+      <h2 className="text-5xl font-bold text-white leading-tight mb-4 flex-grow-0" data-testid="task-title" style={{lineHeight: '1.1', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical'}}>
         {task.title}
       </h2>
       
       {/* Task Details */}
-      <div className="space-y-2 mb-6">
+      <div className="space-y-2 mb-6 flex-shrink-0">
         {/* Source Badge */}
         <div className="flex items-center space-x-2">
           {task.sourceType === 'gmail' ? (
@@ -140,42 +140,46 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         )}
       </div>
       
-      {/* Action Buttons - Improved Layout */}
-      <div className="button-row mb-6">
-        {/* Primary Action - Mark Complete */}
-        <button
-          onClick={() => onMarkComplete(task.id)}
-          className="flex items-center justify-center space-x-2 btn-primary touch-target-large rounded-lg transition-all duration-200 text-sm font-medium"
-          data-testid="button-mark-complete"
-        >
-          <Check className="w-4 h-4" />
-          <span>Mark Complete</span>
-        </button>
-        
-        {/* Secondary Actions - Grouped */}
-        <div className="button-group">
-          <button
-            onClick={() => onViewList(dimension)}
-            className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
-            data-testid="button-view-list"
-          >
-            <List className="w-4 h-4" />
-            <span>View List</span>
-          </button>
-          <button
-            onClick={() => onViewInstructions(task)}
-            className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
-            data-testid="button-view-instructions"
-          >
-            <HelpCircle className="w-4 h-4" />
-            <span>View Instructions</span>
-          </button>
-        </div>
-      </div>
+      {/* Spacer to push buttons to bottom */}
+      <div className="flex-grow"></div>
       
-      {/* Dismiss Button (centered at bottom) */}
-      <div className="flex justify-center">
-        <DismissButton taskId={task.id} dimension={dimension} className="w-[240px]" />
+      {/* Action Buttons Section */}
+      <div className="flex-shrink-0 space-y-4">
+        {/* Primary and Secondary Actions */}
+        <div className="flex flex-col space-y-3">
+          <button
+            onClick={() => onMarkComplete(task.id)}
+            className="flex items-center justify-center space-x-2 btn-primary rounded-lg transition-all duration-200 text-sm font-medium h-12 w-full"
+            data-testid="button-mark-complete"
+          >
+            <Check className="w-4 h-4" />
+            <span>Mark Complete</span>
+          </button>
+          
+          <div className="flex space-x-2">
+            <button
+              onClick={() => onViewList(dimension)}
+              className="flex items-center justify-center space-x-2 btn-secondary rounded-lg transition-all duration-200 text-sm font-medium h-10 flex-1"
+              data-testid="button-view-list"
+            >
+              <List className="w-4 h-4" />
+              <span>View List</span>
+            </button>
+            <button
+              onClick={() => onViewInstructions(task)}
+              className="flex items-center justify-center space-x-2 btn-secondary rounded-lg transition-all duration-200 text-sm font-medium h-10 flex-1"
+              data-testid="button-view-instructions"
+            >
+              <HelpCircle className="w-4 h-4" />
+              <span>Instructions</span>
+            </button>
+          </div>
+        </div>
+        
+        {/* Dismiss Button - Properly Spaced */}
+        <div className="flex justify-center pt-3 border-t border-gray-600">
+          <DismissButton taskId={task.id} dimension={dimension} className="" />
+        </div>
       </div>
     </div>
   );
