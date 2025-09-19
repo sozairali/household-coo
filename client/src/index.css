@@ -48,6 +48,22 @@
   --destructive-bg-hover: hsl(0, 84%, 66%);
   --destructive-text: hsl(210, 40%, 96%);
   
+  /* Dimension-specific card colors */
+  --importance-card: hsl(220, 70%, 15%);
+  --importance-card-hover: hsl(220, 70%, 18%);
+  --importance-border: hsl(217, 91%, 60%);
+  --importance-gradient: linear-gradient(135deg, hsl(220, 70%, 12%) 0%, hsl(220, 70%, 18%) 100%);
+  
+  --urgency-card: hsl(35, 60%, 15%);
+  --urgency-card-hover: hsl(35, 60%, 18%);
+  --urgency-border: hsl(35, 91%, 60%);
+  --urgency-gradient: linear-gradient(135deg, hsl(35, 60%, 12%) 0%, hsl(35, 60%, 18%) 100%);
+  
+  --savings-card: hsl(145, 60%, 15%);
+  --savings-card-hover: hsl(145, 60%, 18%);
+  --savings-border: hsl(142, 71%, 45%);
+  --savings-gradient: linear-gradient(135deg, hsl(145, 60%, 12%) 0%, hsl(145, 60%, 18%) 100%);
+  
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
@@ -86,33 +102,54 @@
     background-color: var(--success-bg);
     color: var(--success-text);
     border: 1px solid var(--success-bg);
+    min-width: 140px;
+    max-width: 200px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .btn-primary:hover {
     background-color: var(--success-bg-hover);
     border-color: var(--success-bg-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
   }
   
   .btn-secondary {
     background-color: transparent;
-    color: var(--primary-bg);
-    border: 1px solid var(--primary-bg);
+    color: hsl(210, 40%, 80%);
+    border: 1px solid hsl(220, 30%, 30%);
+    min-width: 120px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .btn-secondary:hover {
-    background-color: var(--primary-bg);
-    color: var(--primary-text);
+    background-color: hsl(220, 30%, 25%);
+    color: hsl(210, 40%, 96%);
+    border-color: hsl(220, 30%, 35%);
   }
   
   .btn-destructive {
     background-color: transparent;
     color: var(--destructive-bg);
     border: 1px solid var(--destructive-bg);
+    min-width: 120px;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .btn-destructive:hover {
     background-color: var(--destructive-bg);
     color: var(--destructive-text);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
   }
 }
 
@@ -147,4 +184,68 @@ select:focus-visible {
 .caption-text {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+/* Card dimension-specific styles */
+.card-importance {
+  background: var(--importance-gradient);
+  border-color: var(--importance-border);
+  border-width: 2px;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+}
+
+.card-urgency {
+  background: var(--urgency-gradient);
+  border-color: var(--urgency-border);
+  border-width: 2px;
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15);
+}
+
+.card-savings {
+  background: var(--savings-gradient);
+  border-color: var(--savings-border);
+  border-width: 2px;
+  box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+}
+
+/* Layout integrity utilities */
+.card-container {
+  container-type: inline-size;
+  overflow: hidden;
+  min-height: 420px;
+  max-height: 500px;
+}
+
+.button-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Task title truncation */
+.task-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+  min-height: 132px;
+  max-height: 165px;
 }

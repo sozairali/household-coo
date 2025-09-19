@@ -19,8 +19,14 @@ const iconMap = {
 
 const colorMap = {
   importance: 'bg-blue-600 text-white',
-  urgency: 'bg-yellow-500 text-white', 
-  savings: 'bg-green-600 text-white'
+  urgency: 'bg-amber-600 text-white', 
+  savings: 'bg-emerald-600 text-white'
+};
+
+const cardClassMap = {
+  importance: 'card-importance',
+  urgency: 'card-urgency',
+  savings: 'card-savings'
 };
 
 const labelMap = {
@@ -54,7 +60,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
 
   if (!task) {
     return (
-      <div className="bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-500 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
+      <div className={`${cardClassMap[dimension]} card-container rounded-2xl shadow-lg p-8 flex flex-col`} data-testid={`card-${dimension}`}>
         <div className="flex justify-between items-start mb-6">
           <div>
             <div className={`p-3 rounded-full ${colorClass} mb-2`}>
@@ -85,7 +91,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
   const dueDate = task.dueAt ? formatDueDate(task.dueAt) : null;
 
   return (
-    <div className="bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-500 p-8 flex flex-col min-h-[420px]" data-testid={`card-${dimension}`}>
+    <div className={`${cardClassMap[dimension]} card-container rounded-2xl shadow-lg p-8 flex flex-col`} data-testid={`card-${dimension}`}>
       {/* Category Icon and Description (top left) */}
       <div className="flex justify-between items-start mb-6">
         <div>
@@ -97,7 +103,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
       </div>
       
       {/* Task Title - Extra Large */}
-      <h2 className="text-5xl font-bold text-white leading-tight mb-4 flex-grow" data-testid="task-title">
+      <h2 className="task-title text-5xl font-bold text-white leading-tight mb-4" data-testid="task-title">
         {task.title}
       </h2>
       
@@ -134,8 +140,8 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         )}
       </div>
       
-      {/* Action Buttons - Standardized Layout */}
-      <div className="flex items-center justify-between gap-4 mb-6">
+      {/* Action Buttons - Improved Layout */}
+      <div className="button-row mb-6">
         {/* Primary Action - Mark Complete */}
         <button
           onClick={() => onMarkComplete(task.id)}
@@ -147,7 +153,7 @@ export function SpotlightCard({ task, dimension, onViewList, onViewInstructions,
         </button>
         
         {/* Secondary Actions - Grouped */}
-        <div className="flex gap-3">
+        <div className="button-group">
           <button
             onClick={() => onViewList(dimension)}
             className="flex items-center justify-center space-x-2 btn-secondary touch-target rounded-lg transition-all duration-200 text-sm font-medium"
