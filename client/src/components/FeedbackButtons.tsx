@@ -31,27 +31,27 @@ export function DismissButton({ taskId, dimension, className = '' }: DismissButt
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <button
-            className="flex items-center justify-center space-x-2 btn-destructive touch-target rounded-lg transition-all duration-200 text-sm font-medium"
+            className={`flex items-center justify-center space-x-2 btn-destructive rounded-lg transition-all duration-200 text-sm font-medium ${className.includes('h-8') ? 'h-8 min-h-[32px] px-3' : 'touch-target'}`}
             data-testid="button-dismiss"
           >
             <X className="w-4 h-4" />
             <span>Dismiss</span>
           </button>
         </AlertDialogTrigger>
-        <AlertDialogContent className="bg-gray-800 border-gray-600">
+        <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">Dismiss Task</AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-300">
+            <AlertDialogTitle className="text-foreground">Dismiss Task</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
               Dismiss task as not relevant? This will remove it from your task list.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-gray-700 text-white border-gray-600 hover:bg-gray-600">
+            <AlertDialogCancel className="bg-muted text-foreground border-border hover:bg-muted/80">
               No
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDismiss}
-              className="bg-red-600 text-white hover:bg-red-700"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Yes
             </AlertDialogAction>

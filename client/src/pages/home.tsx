@@ -89,26 +89,26 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900" data-testid="page-home">
+    <div className="min-h-screen bg-background" data-testid="page-home">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-gray-800 border-b-2 border-gray-600 shadow-sm">
+      <header className="sticky top-0 z-50 bg-card border-b-2 border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           {/* Integration Status Banner */}
-          <div className="bg-green-800 border border-green-600 rounded-lg p-3 mb-4">
-            <p className="text-white text-sm text-center font-medium">
+          <div className="bg-success-bg/20 rounded-lg p-3 mb-4">
+            <p className="text-foreground text-sm text-center font-medium">
               🧠 AI-powered analysis of your Gmail and WhatsApp • Finding the most urgent, important, and financially lucrative tasks
             </p>
           </div>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold text-white" data-testid="title-app">
+              <h1 className="text-2xl font-bold text-foreground" data-testid="title-app">
                 Household COO
               </h1>
               <button
                 onClick={handleSync}
                 disabled={isSyncing}
-                className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition-colors min-h-[60px]"
+                className="flex items-center space-x-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors min-h-[60px]"
                 data-testid="button-sync"
               >
                 <RefreshCw className={`text-lg w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
@@ -117,7 +117,7 @@ export default function Home() {
             </div>
             
             <div className="flex items-center space-x-6">
-              <div className="text-sm text-gray-300" data-testid="text-last-refresh">
+              <div className="text-sm text-muted-foreground" data-testid="text-last-refresh">
                 Last refresh: {formatLastRefresh(lastRefreshISO)}
               </div>
               
@@ -125,7 +125,7 @@ export default function Home() {
               
               <button
                 onClick={handleOpenSettings}
-                className="p-3 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg min-h-[60px] min-w-[60px]"
+                className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg min-h-[60px] min-w-[60px] flex items-center justify-center"
                 data-testid="button-settings"
                 aria-label="Settings"
               >

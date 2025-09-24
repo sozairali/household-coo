@@ -4,65 +4,65 @@
 @tailwind utilities;
 
 :root {
-  /* Improved dark theme palette with better contrast */
-  --background: hsl(220, 43%, 6%);
-  --foreground: hsl(210, 40%, 96%);
-  --card: hsl(220, 35%, 10%);
-  --card-foreground: hsl(210, 40%, 96%);
-  --popover: hsl(220, 35%, 10%);
-  --popover-foreground: hsl(210, 40%, 96%);
-  --primary: hsl(217, 91%, 60%);
-  --primary-foreground: hsl(210, 40%, 2%);
-  --secondary: hsl(220, 30%, 18%);
-  --secondary-foreground: hsl(210, 40%, 96%);
-  --muted: hsl(220, 30%, 18%);
-  --muted-foreground: hsl(215, 16%, 72%);
-  --accent: hsl(220, 30%, 18%);
-  --accent-foreground: hsl(210, 40%, 96%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(210, 40%, 96%);
-  --border: hsl(220, 30%, 18%);
-  --input: hsl(220, 30%, 18%);
-  --ring: hsl(217, 91%, 60%);
-  --chart-1: hsl(220, 70%, 50%);
-  --chart-2: hsl(160, 60%, 45%);
-  --chart-3: hsl(30, 80%, 55%);
-  --chart-4: hsl(280, 65%, 60%);
-  --chart-5: hsl(340, 75%, 55%);
+  /* Catppuccin Mocha - Warm dark theme palette */
+  --background: 232 22% 12%;           /* #1e1e2e - Base */
+  --foreground: 227 68% 88%;           /* #cdd6f4 - Text */
+  --card: 231 23% 15%;                 /* #313244 - Surface0 */
+  --card-foreground: 227 68% 88%;      /* #cdd6f4 - Text */
+  --popover: 231 23% 15%;              /* #313244 - Surface0 */
+  --popover-foreground: 227 68% 88%;   /* #cdd6f4 - Text */
+  --primary: 243 23% 77%;              /* #b4befe - Lavender */
+  --primary-foreground: 232 22% 12%;   /* #1e1e2e - Base */
+  --secondary: 233 12% 39%;            /* #585b70 - Surface2 */
+  --secondary-foreground: 227 68% 88%; /* #cdd6f4 - Text */
+  --muted: 233 12% 39%;                /* #585b70 - Surface2 */
+  --muted-foreground: 228 39% 80%;     /* #bac2de - Subtext1 */
+  --accent: 233 12% 39%;               /* #585b70 - Surface2 */
+  --accent-foreground: 227 68% 88%;    /* #cdd6f4 - Text */
+  --destructive: 343 81% 75%;          /* #f38ba8 - Red */
+  --destructive-foreground: 227 68% 88%; /* #cdd6f4 - Text */
+  --border: 233 12% 39%;               /* #585b70 - Surface2 */
+  --input: 233 12% 39%;                /* #585b70 - Surface2 */
+  --ring: 243 23% 77%;                 /* #b4befe - Lavender */
+  --chart-1: 217 92% 76%;              /* #89b4fa - Blue */
+  --chart-2: 115 54% 76%;              /* #a6e3a1 - Green */
+  --chart-3: 35 77% 49%;               /* #fab387 - Peach */
+  --chart-4: 267 84% 81%;              /* #cba6f7 - Mauve */
+  --chart-5: 343 81% 75%;              /* #f38ba8 - Red */
   --radius: 0.5rem;
   
-  /* ADHD-friendly dark theme colors with improved contrast */
-  --primary-bg: hsl(217, 91%, 60%);
-  --primary-bg-hover: hsl(217, 91%, 65%);
-  --primary-text: hsl(210, 40%, 2%);
+  /* ADHD-friendly Catppuccin Mocha colors with improved contrast */
+  --primary-bg: 243 23% 77%;           /* #b4befe - Lavender */
+  --primary-bg-hover: 243 23% 82%;     /* Lighter lavender */
+  --primary-text: 232 22% 12%;         /* #1e1e2e - Base */
   
-  --secondary-bg: hsl(220, 30%, 18%);
-  --secondary-bg-hover: hsl(220, 30%, 22%);
-  --secondary-text: hsl(210, 40%, 96%);
+  --secondary-bg: 233 12% 39%;         /* #585b70 - Surface2 */
+  --secondary-bg-hover: 237 16% 23%;   /* #45475a - Surface1 */
+  --secondary-text: 227 68% 88%;       /* #cdd6f4 - Text */
   
-  --success-bg: hsl(142, 71%, 45%);
-  --success-bg-hover: hsl(142, 71%, 50%);
-  --success-text: hsl(210, 40%, 2%);
+  --success-bg: 115 54% 76%;           /* #a6e3a1 - Green */
+  --success-bg-hover: 115 54% 81%;     /* Lighter green */
+  --success-text: 232 22% 12%;         /* #1e1e2e - Base */
   
-  --destructive-bg: hsl(0, 84%, 60%);
-  --destructive-bg-hover: hsl(0, 84%, 66%);
-  --destructive-text: hsl(210, 40%, 96%);
+  --destructive-bg: 343 81% 75%;       /* #f38ba8 - Red */
+  --destructive-bg-hover: 343 81% 80%; /* Lighter red */
+  --destructive-text: 227 68% 88%;     /* #cdd6f4 - Text */
   
-  /* Dimension-specific card colors */
-  --importance-card: hsl(220, 70%, 15%);
-  --importance-card-hover: hsl(220, 70%, 18%);
-  --importance-border: hsl(217, 91%, 60%);
-  --importance-gradient: linear-gradient(135deg, hsl(220, 70%, 12%) 0%, hsl(220, 70%, 18%) 100%);
+  /* Dimension-specific card colors with Catppuccin Mocha */
+  --importance-card: 244 23% 12%;      /* Darker lavender base */
+  --importance-card-hover: 244 23% 15%;
+  --importance-border: 243 23% 77%;    /* #b4befe - Lavender */
+  --importance-gradient: linear-gradient(135deg, hsl(244, 23%, 10%) 0%, hsl(244, 23%, 15%) 100%);
   
-  --urgency-card: hsl(35, 60%, 15%);
-  --urgency-card-hover: hsl(35, 60%, 18%);
-  --urgency-border: hsl(35, 91%, 60%);
-  --urgency-gradient: linear-gradient(135deg, hsl(35, 60%, 12%) 0%, hsl(35, 60%, 18%) 100%);
+  --urgency-card: 22 56% 12%;          /* Darker peach base */
+  --urgency-card-hover: 22 56% 15%;
+  --urgency-border: 35 77% 49%;        /* #fab387 - Peach */
+  --urgency-gradient: linear-gradient(135deg, hsl(22, 56%, 10%) 0%, hsl(22, 56%, 15%) 100%);
   
-  --savings-card: hsl(145, 60%, 15%);
-  --savings-card-hover: hsl(145, 60%, 18%);
-  --savings-border: hsl(142, 71%, 45%);
-  --savings-gradient: linear-gradient(135deg, hsl(145, 60%, 12%) 0%, hsl(145, 60%, 18%) 100%);
+  --savings-card: 115 30% 12%;         /* Darker green base */
+  --savings-card-hover: 115 30% 15%;
+  --savings-border: 115 54% 76%;       /* #a6e3a1 - Green */
+  --savings-gradient: linear-gradient(135deg, hsl(115, 30%, 10%) 0%, hsl(115, 30%, 15%) 100%);
   
   --font-sans: 'Inter', system-ui, sans-serif;
 }
@@ -112,14 +112,14 @@
   .btn-primary:hover {
     background-color: var(--success-bg-hover);
     border-color: var(--success-bg-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    transform: translateY(-1px) scale(1.02);
+    filter: brightness(1.1);
   }
   
   .btn-secondary {
     background-color: transparent;
-    color: hsl(210, 40%, 80%);
-    border: 1px solid hsl(220, 30%, 30%);
+    color: hsl(228, 39%, 80%);           /* Catppuccin subtext1 */
+    border: 1px solid hsl(233, 12%, 39%); /* Surface2 */
     min-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -128,9 +128,10 @@
   }
   
   .btn-secondary:hover {
-    background-color: hsl(220, 30%, 25%);
-    color: hsl(210, 40%, 96%);
-    border-color: hsl(220, 30%, 35%);
+    background-color: hsl(237, 16%, 23%); /* Surface1 */
+    color: hsl(227, 68%, 88%);           /* Text */
+    border-color: hsl(237, 16%, 28%);    /* Lighter surface1 */
+    transform: translateY(-1px) scale(1.02);
   }
   
   .btn-destructive {
@@ -142,13 +143,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    transition: all 0.2s ease-in-out;
   }
   
   .btn-destructive:hover {
     background-color: var(--destructive-bg);
     color: var(--destructive-text);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    transform: translateY(-1px) scale(1.02);
+    filter: brightness(1.1);
+    border-width: 2px;
   }
 }
 
@@ -188,23 +191,20 @@ select:focus-visible {
 /* Card dimension-specific styles */
 .card-importance {
   background: var(--importance-gradient);
-  border-color: var(--importance-border);
-  border-width: 2px;
-  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+  border: 1px solid var(--importance-border);
+  /* Removed glow, added subtle border */
 }
 
 .card-urgency {
   background: var(--urgency-gradient);
-  border-color: var(--urgency-border);
-  border-width: 2px;
-  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15);
+  border: 1px solid var(--urgency-border);
+  /* Removed glow, added subtle border */
 }
 
 .card-savings {
   background: var(--savings-gradient);
-  border-color: var(--savings-border);
-  border-width: 2px;
-  box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+  border: 1px solid var(--savings-border);
+  /* Removed glow, added subtle border */
 }
 
 /* Layout integrity utilities */
@@ -239,19 +239,19 @@ select:focus-visible {
 .task-title-flexible {
   line-height: 1.1;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  color: hsl(0, 0%, 98%);
+  color: hsl(227, 68%, 88%);           /* Catppuccin text */
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
 /* Enhanced typography for better contrast */
 .task-meta-text {
-  color: hsl(210, 40%, 85%);
+  color: hsl(228, 39%, 80%);           /* Catppuccin subtext1 */
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .task-description {
-  color: hsl(210, 30%, 75%);
+  color: hsl(231, 16%, 74%);           /* Catppuccin subtext0 */
   font-weight: 500;
 }
 
@@ -280,6 +280,6 @@ select:focus-visible {
 .btn-primary:focus-visible,
 .btn-secondary:focus-visible,
 .btn-destructive:focus-visible {
-  outline: 3px solid hsl(60, 100%, 80%);
+  outline: 3px solid hsl(35, 77%, 84%);  /* Light peach for high contrast */
   outline-offset: 2px;
 }
