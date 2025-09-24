@@ -1,0 +1,23 @@
+--- 
+description: Project foundations for style, tests, security, performance, docs. Always apply.
+alwaysApply: true
+---
+
+# Project Foundations
+
+- Use repo linters/formatters as the single source of truth. Do not override ad-hoc.
+- Every code change must include/adjust tests in the same PR.
+- Validate and sanitize *all external inputs* (HTTP, CLI, file, env). 
+  - TypeScript: prefer zod; Python: prefer pydantic.
+- Never commit secrets. Use .env.example for docs and a secrets manager for real values.
+- Log in structured form; avoid PII in logs; keep debug logs off in prod by default.
+- For performance work: write a tiny before/after benchmark or profile plan first.
+- Update docs when behavior changes: README “Setup/Run/Test/Deploy/Troubleshoot”.
+- Record notable architectural decisions as short ADRs.
+
+@README.md
+@docs/
+@tests/
+@pyproject.toml
+@package.json
+@.eslintrc*

@@ -1,0 +1,46 @@
+---
+alwaysApply: true
+---
+# Development Rules
+
+## 📜 Core Philosophy
+ 
+1.  **Simplicity:** Prioritize simple, clear, and maintainable solutions. Avoid unnecessary complexity or over-engineering. Remember to always prioritize simple solutions.
+2.  **Iterate:** Prefer iterating on existing, working code rather than building entirely new solutions from scratch, unless fundamentally necessary or explicitly requested.
+3.  **Focus:** Concentrate efforts on the specific task assigned. Avoid unrelated changes or scope creep.
+4.  **Quality:** Strive for a clean, organized, well-tested, and secure codebase.
+5.  **Collaboration:** This document guides both human developers and the AI assistant for effective teamwork.
+
+## 📚 Project Context & Understanding
+ 
+1.  **Documentation First:**
+    *   **Always** check for and thoroughly review relevant project documentation *before* starting any task. This includes:
+        *   Product Requirements Documents (PRDs)
+        *   `README.md` (Project overview, setup, patterns, technology stack)
+        *   `docs/architecture.md` (System architecture, component relationships)
+        *   `docs/technical.md` (Technical specifications, established patterns)
+        *   `tasks/tasks.md` (Current development tasks, requirements)
+    *   If documentation is missing, unclear, or conflicts with the request, **ask for clarification**.
+
+## ✨ Code Quality & Style
+ 
+1.  **TypeScript Guidelines:** Use strict typing (avoid `any`). Document complex logic or public APIs with JSDoc.
+2.  **Readability & Maintainability:** Write clean, well-organized code.
+3.  **Small Files & Components:**
+    *   Keep files under **300 lines**. Refactor proactively.
+    *   Break down large React components into smaller, single-responsibility components.
+4.  **Avoid Duplication (DRY):** Actively look for and reuse existing functionality. Refactor to eliminate duplication.
+5.  **No Bazel:** Bazel is not permitted. Use project-specified build tools.
+6.  **Linting/Formatting:** Ensure all code conforms to project's ESLint/Prettier rules.
+7.  **Pattern Consistency:** Adhere to established project patterns. Don't introduce new ones without discussion/explicit instruction. If replacing an old pattern, ensure the old implementation is fully removed.
+8.  **File Naming:** Use clear, descriptive names. Avoid "temp", "refactored", "improved", etc., in permanent file names.
+9.  **No One-Time Scripts:** Do not commit one-time utility scripts into the main codebase.
+
+## ♻️ Refactoring
+ 
+1.  **Purposeful Refactoring:** Refactor to improve clarity, reduce duplication, simplify complexity, or adhere to architectural goals.
+2.  **Holistic Check:** When refactoring, look for duplicate code, similar components/files, and opportunities for consolidation across the affected area.
+3.  **Edit, Don't Copy:** Modify existing files directly. Do not duplicate files and rename them (e.g., `component-v2.tsx`).
+4.  **Verify Integrations:** After refactoring, ensure all callers, dependencies, and integration points function correctly. Run relevant tests.
+
+

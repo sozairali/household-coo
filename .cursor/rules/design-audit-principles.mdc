@@ -1,0 +1,49 @@
+# Design Audit Principles
+
+## Color Consistency Rules
+- **Always use CSS variables** instead of hardcoded Tailwind colors
+- **Forbidden patterns**: `bg-gray-*`, `text-blue-*`, `border-green-*` (use CSS variables instead)
+- **Required patterns**: `bg-background`, `text-foreground`, `bg-primary`, `text-chart-1`, etc.
+- **Color mapping**:
+  - `bg-gray-900` → `bg-background`
+  - `bg-gray-800` → `bg-card` 
+  - `text-white` → `text-foreground`
+  - `text-gray-300` → `text-muted-foreground`
+  - `bg-blue-600` → `bg-primary`
+  - `bg-green-600` → `bg-chart-2`
+  - `bg-orange-500` → `bg-chart-3`
+
+## Typography & Text Overflow
+- **Large text** (`text-5xl`, `text-4xl`) must have overflow protection
+- **Required overflow handling**: `overflow-hidden`, `text-overflow: ellipsis`, `line-clamp-*`
+- **Button text**: Must use `text-overflow: ellipsis` and `white-space: nowrap`
+- **Card titles**: Limit to 3 lines with `-webkit-line-clamp: 3`
+
+## Responsive Design Requirements
+- **Test breakpoints**: 375px (mobile), 768px (tablet), 1024px (desktop), 1440px (wide)
+- **Grid behavior**: Cards must stack properly on mobile (`grid-cols-1 lg:grid-cols-3`)
+- **Button groups**: Must wrap or stack gracefully on small screens
+- **Touch targets**: Minimum 44px height and width for interactive elements
+- **Container queries**: Use for component-level responsiveness when possible
+
+## Spacing & Layout Standards
+- **Consistent padding**: Use standard scale (`p-4`, `p-6`, `p-8`)
+- **Gap consistency**: Use uniform spacing in flex/grid layouts (`gap-4`, `gap-6`, `gap-8`)
+- **Margin hierarchy**: Consistent vertical rhythm between sections
+- **Card padding**: Use `p-6` or `p-8` for main content areas
+
+## Component Audit Checklist
+1. **No hardcoded colors** - scan for `bg-*-500`, `text-*-400` patterns
+2. **Overflow protection** - check all text content has proper constraints
+3. **Responsive behavior** - verify layout works at all breakpoints  
+4. **Consistent spacing** - ensure padding/margins follow design system
+5. **Interactive elements** - confirm proper hover/focus states using CSS variables
+
+## Quick Fixes for Common Issues
+- Replace `bg-gray-*` with appropriate CSS variable
+- Add `overflow-hidden` to any container with dynamic text
+- Ensure all buttons have `min-h-[44px]` for accessibility
+- Use `flex-wrap` or responsive grid classes for button groups
+- Test component isolation at different viewport sizes
+
+---
