@@ -36,11 +36,20 @@ alwaysApply: true
 8.  **File Naming:** Use clear, descriptive names. Avoid "temp", "refactored", "improved", etc., in permanent file names.
 9.  **No One-Time Scripts:** Do not commit one-time utility scripts into the main codebase.
 
+## 🧪 Testing Requirements
+
+1.  **Module Testing:** For each module you write, create a separate test file (e.g., `moduleName.test.ts`) that tests the core functionality of that module.
+2.  **Simple Test Cases:** Write three essential test cases for each module: (1) Happy path - normal operation works correctly, (2) Error handling - module handles errors gracefully, (3) Edge cases - module behaves correctly with unexpected inputs or boundary conditions. Refer to the docs folder for the intended functionality of each module.
+3.  **Test Coverage:** Ensure tests cover the main public methods/functions of each module. Focus on testing behavior, not implementation details.
+
 ## ♻️ Refactoring
  
 1.  **Purposeful Refactoring:** Refactor to improve clarity, reduce duplication, simplify complexity, or adhere to architectural goals.
 2.  **Holistic Check:** When refactoring, look for duplicate code, similar components/files, and opportunities for consolidation across the affected area.
 3.  **Edit, Don't Copy:** Modify existing files directly. Do not duplicate files and rename them (e.g., `component-v2.tsx`).
 4.  **Verify Integrations:** After refactoring, ensure all callers, dependencies, and integration points function correctly. Run relevant tests.
+
+
+
 
 
