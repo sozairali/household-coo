@@ -1,7 +1,7 @@
 # Backend Development To-Do
 
 ## Overview
-Build the essential backend modules for Household COO.
+Build the essential backend modules for Household COO using Python + FastAPI.
 
 ---
 
@@ -15,18 +15,19 @@ Build the essential backend modules for Household COO.
 **Dependencies**: None
 
 ### 2. Database Connection Module
-**File**: `server/database.ts`  
-**Purpose**: Establish PostgreSQL connection using Drizzle ORM  
+**File**: `backend/database.py`  
+**Purpose**: Establish PostgreSQL connection using SQLAlchemy + Alembic  
 **Why needed**: Required for all data operations  
 **Dependencies**: Database Module (schema)  
 **Tasks**:
-- [ ] Set up database connection
+- [ ] Set up SQLAlchemy connection
 - [ ] Configure connection pooling
 - [ ] Add connection error handling
 - [ ] Test database connectivity
+- [ ] Set up Alembic for migrations
 
 ### 3. Email Service Module
-**File**: `server/services/emailService.ts`  
+**File**: `backend/services/email_service.py`  
 **Purpose**: Gmail API integration  
 **Why needed**: Feature 1 - Generate tasks from emails  
 **Dependencies**: None (external API only)  
@@ -38,7 +39,7 @@ Build the essential backend modules for Household COO.
 - [ ] Handle API errors
 
 ### 4. WhatsApp Service Module
-**File**: `server/services/whatsappService.ts`  
+**File**: `backend/services/whatsapp_service.py`  
 **Purpose**: WhatsApp bot integration  
 **Why needed**: Feature 3 - Add tasks via WhatsApp  
 **Dependencies**: None (external API only)  
@@ -49,7 +50,7 @@ Build the essential backend modules for Household COO.
 - [ ] Error handling
 
 ### 5. LLM Service Module
-**File**: `server/services/llmService.ts`  
+**File**: `backend/services/llm_service.py`  
 **Purpose**: AI-powered task analysis  
 **Why needed**: Features 2, 4, 7 - Categorize tasks and generate instructions  
 **Dependencies**: None (external API only)  
@@ -60,7 +61,7 @@ Build the essential backend modules for Household COO.
 - [ ] Error handling and retries
 
 ### 6. Budget Management Module
-**File**: `server/services/budgetService.ts`  
+**File**: `backend/services/budget_service.py`  
 **Purpose**: Track LLM API usage and costs  
 **Why needed**: Features 9, 10 - Credit management  
 **Dependencies**: Database Connection Module, LLM Service Module  
@@ -71,7 +72,7 @@ Build the essential backend modules for Household COO.
 - [ ] Prevent overspending
 
 ### 7. Task Management Module
-**File**: `server/services/taskService.ts`  
+**File**: `backend/services/task_service.py`  
 **Purpose**: CRUD operations for tasks  
 **Why needed**: Core functionality - manage task lifecycle  
 **Dependencies**: Database Connection Module, Budget Management Module, LLM Service Module  
@@ -82,7 +83,7 @@ Build the essential backend modules for Household COO.
 - [ ] Get top task by dimension (importance/urgency/savings)
 
 ### 8. Task Engine Module
-**File**: `server/services/taskEngine.ts`  
+**File**: `backend/services/task_engine.py`  
 **Purpose**: Extract and categorize tasks from emails  
 **Why needed**: Architecture component - Task Engine  
 **Dependencies**: Task Management Module, LLM Service Module, Email Service Module  
@@ -93,7 +94,7 @@ Build the essential backend modules for Household COO.
 - [ ] Store categorized tasks
 
 ### 9. API Routes Module
-**File**: `server/routes.ts` (EXISTING - needs expansion)  
+**File**: `backend/main.py` (EXISTING - needs expansion)  
 **Purpose**: HTTP endpoints for frontend communication  
 **Why needed**: Frontend-backend communication  
 **Dependencies**: All service modules  
@@ -103,6 +104,7 @@ Build the essential backend modules for Household COO.
 - [ ] Feedback submission endpoints
 - [ ] Health check endpoint
 - [ ] Error handling middleware
+- [ ] CORS configuration for frontend
 
 ---
 
@@ -123,3 +125,15 @@ Build the essential backend modules for Household COO.
 - **OpenAI/Anthropic API**: Task analysis and instructions
 
 ### Internal Dependencies
+
+## Python-Specific Considerations
+
+### Dependencies
+- **FastAPI**: Modern, fast web framework for APIs
+- **SQLAlchemy**: Python SQL toolkit and ORM
+- **Alembic**: Database migration tool
+- **Pydantic**: Data validation using Python type annotations
+- **httpx**: Modern HTTP client for external API calls
+- **python-multipart**: For handling form data
+- **python-jose**: JWT token handling
+- **passlib**: Password hashing

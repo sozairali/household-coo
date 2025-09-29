@@ -6,13 +6,12 @@ A simple task management system for busy parents. Built for both touchscreen (Ra
 
 ## Core Architecture
 
-```markdown:docs/architecture.md
 ```
 ┌─────────────────────────────────────────┐
 │           Single App (Port 5000)        │
 ├─────────────────────────────────────────┤
 │  Frontend: React + TypeScript           │
-│  Backend: Node.js + Express             │
+│  Backend: Python + FastAPI              │
 │  Database: PostgreSQL                   │
 └─────────────────────────────────────────┘
 ```
@@ -22,7 +21,7 @@ A simple task management system for busy parents. Built for both touchscreen (Ra
 | Component | Choice | Reason |
 |-----------|--------|--------|
 | **Frontend** | React + TypeScript | Touch-friendly, type-safe |
-| **Backend** | Node.js + Express | Same language, simple |
+| **Backend** | Python + FastAPI | Excellent AI/ML ecosystem, simple API |
 | **Database** | PostgreSQL | Reliable, handles JSON |
 | **Deployment** | Single port | Easy Raspberry Pi setup |
 
@@ -64,9 +63,11 @@ feedback (id, task_id, dimension, signal)
 ## Deployment
 
 ```bash
-# Build and run
+# Build frontend
 npm run build
-npm start
+
+# Start Python backend (serves both API and frontend)
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 5000
 
 # Runs on single port (5000)
 # Serves both API and frontend
