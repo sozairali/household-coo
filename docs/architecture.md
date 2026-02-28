@@ -1,123 +1,165 @@
-# Household COO - Architecture
+# Household COO — Architecture
 
-## Overview
+## System Overview
 
-A simple task management system for busy parents. Built for both touchscreen (Raspberry Pi) and traditional web use (desktop/laptop).
-
-## Core Architecture
+Two physical machines on the same home network. The Pi is the only thing
+users ever interact with. The home machine stays in the background as a
+dedicated LLM server.
 
 ```
-┌─────────────────────────────────────────┐
-│           Single App (Port 5000)        │
-├─────────────────────────────────────────┤
-│  Frontend: React + TypeScript           │
-│  Backend: Python + FastAPI              │
-│  Database: SQLite (local file)          │
-└─────────────────────────────────────────┘
+ HOME NETWORK
+ ══════════════════════════════════════════════════════════════════════
+
+  ┌─────────────────────────────────────┐     ┌──────────────────────────────┐
+  │       RASPBERRY PI (Kiosk)          │     │   HOME MACHINE (LLM Server)  │
+  │                                     │     │                              │
+  │  ┌─────────────────────────────┐    │     │  ┌────────────────────────┐  │
+  │  │   React + TypeScript        │    │     │  │   Ollama daemon        │  │
+  │  │   Kiosk UI  (port 5000)     │    │     │  │                        │  │
+  │  │                             │    │     │  │   llama3.1:8b          │  │
+  │  │   • Three spotlight cards   │    │     │  │   (GPU-accelerated)    │  │
+  │  │   • Task instructions       │    │     │  │                        │  │
+  │  │   • Settings / budget       │    │     │  │   OpenAI-compatible    │  │
+  │  └────────────┬────────────────┘    │     │  │   API  (port 11434)    │  │
+  │               │ HTTP (same process) │     │  └────────────┬───────────┘  │
+  │  ┌────────────▼────────────────┐    │     │               │              │
+  │  │   FastAPI Backend           │    │     └───────────────┼──────────────┘
+  │  │                             │    │                     │
+  │  │   • Task CRUD               │◄───┼─────────────────────┘
+  │  │   • Email sync scheduler    │    │   HTTP :11434/v1
+  │  │   • WhatsApp webhook        │    │   (local network)
+  │  │   • LLM client              │    │
+  │  │   • Scoring & ranking       │    │
+  │  └────────────┬────────────────┘    │
+  │               │                     │
+  │  ┌────────────▼────────────────┐    │
+  │  │   SQLite                    │    │
+  │  │   household_coo.db          │    │
+  │  │                             │    │
+  │  │   • tasks                   │    │
+  │  │   • budget_transactions     │    │
+  │  │   • feedback                │    │
+  │  └─────────────────────────────┘    │
+  │                                     │
+  └─────────────────────────────────────┘
+               │               │
+               │  INTERNET      │
+        ┌──────▼──────┐  ┌─────▼──────────┐
+        │  Gmail API  │  │ WhatsApp       │
+        │  (OAuth2)   │  │ Business API   │
+        └─────────────┘  └────────────────┘
 ```
-
-## Why This Stack?
-
-| Component | Choice | Reason |
-|-----------|--------|--------|
-| **Frontend** | React + TypeScript | Touch-friendly, type-safe |
-| **Backend** | Python + FastAPI | Excellent AI/ML ecosystem, simple API |
-| **Database** | SQLite | Simple, no server setup, perfect for personal use |
-| **Deployment** | Single port | Easy Raspberry Pi setup |
-
-## Key Components
-
-### 1. Task Engine
-- Extracts tasks from Gmail emails
-- Categorizes by importance, urgency, savings
-- Generates step-by-step instructions
-
-### 2. Dual-Input UI
-- **Touch support**: Large buttons (44px minimum), swipe gestures
-- **Web support**: Click interactions, keyboard shortcuts
-- **Responsive**: Adapts to screen size automatically
-- **Card-based layout**: One task at a time
-
-### 3. Data Storage
-```sql
--- SQLite tables for local storage
-CREATE TABLE tasks (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    summary TEXT NOT NULL,
-    source_type TEXT NOT NULL,
-    received_at TIMESTAMP NOT NULL,
-    due_at TIMESTAMP,
-    savings_usd REAL,
-    importance INTEGER NOT NULL DEFAULT 0,
-    urgency INTEGER NOT NULL DEFAULT 0,
-    savings_score INTEGER NOT NULL DEFAULT 0,
-    status TEXT NOT NULL DEFAULT 'open',
-    actions TEXT,  -- JSON string for action links
-    citations TEXT  -- JSON string for citation links
-);
-
-CREATE TABLE budget_transactions (
-    id TEXT PRIMARY KEY,
-    type TEXT NOT NULL,
-    amount_usd REAL NOT NULL,
-    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    note TEXT
-);
-
-CREATE TABLE feedback (
-    id TEXT PRIMARY KEY,
-    task_id TEXT NOT NULL,
-    dimension TEXT NOT NULL,
-    signal INTEGER NOT NULL,
-    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## Input Methods
-
-### Touchscreen (Raspberry Pi)
-- **Large touch targets**: All buttons 44px+ 
-- **Swipe gestures**: Swipe left to dismiss, right to complete
-- **Voice input**: Hands-free task entry
-- **High contrast**: Works in any lighting
-
-### Web Browser (Desktop/Laptop)
-- **Click interactions**: Standard mouse clicks
-- **Keyboard shortcuts**: Arrow keys, Enter, Escape
-- **Hover states**: Visual feedback on mouse hover
-- **Tab navigation**: Full keyboard accessibility
-
-## Deployment
-
-```bash
-# Build frontend
-npm run build
-
-# Start Python backend (serves both API and frontend)
-python -m uvicorn backend.main:app --host 0.0.0.0 --port 5000
-
-# Runs on single port (5000)
-# Serves both API and frontend
-```
-
-## What's NOT Included
-
-- Multi-user authentication (personal use only)
-- Complex security (basic HTTPS is enough)
-- Microservices (unnecessary complexity)
-- Real-time notifications (check manually)
-- Advanced analytics (simple counters only)
-
-## Future Extensions
-
-Each component is modular and reusable:
-- Task Engine → Any task management app
-- Dual-Input UI → Any multi-device app  
-- Scoring System → Any prioritization tool
 
 ---
 
-**Bottom Line**: Simple, dual-input, single-deployment app that works on both touchscreens and traditional computers.
+## Data Flow
+
+### Daily email sync (scheduled, ~24h interval)
+```
+Gmail API → email_service → raw email text
+         → llm_service (Ollama) → extracted tasks + scores
+         → SQLite tasks table
+         → React UI (three cards refresh)
 ```
 
+### WhatsApp task entry (on demand)
+```
+User WhatsApp message → WhatsApp webhook → FastAPI
+                      → llm_service (Ollama) → categorised task
+                      → SQLite tasks table
+                      → React UI (card updates)
+```
+
+### View instructions (on demand)
+```
+User taps "Instructions" → FastAPI
+                         → llm_service (Ollama) → step-by-step plan
+                         → Instruction drawer (React)
+                         → budget_transactions updated
+```
+
+---
+
+## Component Responsibilities
+
+| Component | Where | Responsibility |
+|---|---|---|
+| React UI | Pi | Kiosk display, touch interaction, task cards |
+| FastAPI | Pi | API routes, scheduling, orchestration |
+| SQLite | Pi | Persistent storage for tasks, budget, feedback |
+| email_service | Pi | Gmail OAuth2, fetch + parse raw emails |
+| whatsapp_service | Pi | Webhook receiver, message parsing |
+| llm_service | Pi (client) | Calls Ollama, prompt construction, response parsing |
+| Ollama + llama3.1:8b | Home machine | Task extraction, categorisation, instruction generation |
+
+---
+
+## LLM Server Setup (Home Machine)
+
+```bash
+# Install Ollama (one-time)
+curl -fsSL https://ollama.com/install.sh | sh   # Linux/Mac
+# or download installer from ollama.com           # Windows
+
+# Pull the model (one-time, ~4.7 GB)
+ollama pull llama3.1:8b
+
+# Allow LAN access (so the Pi can reach it)
+OLLAMA_HOST=0.0.0.0 ollama serve
+```
+
+Find your home machine's local IP:
+```bash
+# Mac / Linux
+ip route get 1 | awk '{print $7}'
+
+# Windows
+ipconfig | findstr "IPv4"
+# e.g. 192.168.1.42
+```
+
+---
+
+## Pi Configuration
+
+Add to `backend/.env`:
+```
+OLLAMA_BASE_URL=http://192.168.1.42:11434/v1   # your home machine's LAN IP
+OLLAMA_MODEL=llama3.1:8b
+```
+
+The `llm_service.py` client call becomes:
+```python
+client = OpenAI(
+    base_url=os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434/v1'),
+    api_key="ollama"          # required by SDK, ignored by Ollama
+)
+model = os.getenv('OLLAMA_MODEL', 'llama3.1:8b')
+```
+
+No other code changes needed — Ollama's API is fully OpenAI-compatible.
+
+---
+
+## Why This Split?
+
+| Concern | Decision |
+|---|---|
+| Pi stays fast and cool | Pi never runs the model — only makes HTTP calls |
+| Model quality | 8B parameter model with GPU >> 3B on Pi CPU |
+| Offline resilience | Tasks and UI still work if home machine is off; only instruction generation fails |
+| Simplicity | No Kubernetes, no Docker Compose — two processes, one network call |
+| Cost | $0/month vs. commercial API |
+
+---
+
+## Stack Summary
+
+| Layer | Tech | Location |
+|---|---|---|
+| UI | React + TypeScript + Tailwind + Zustand | Pi |
+| API | Python + FastAPI | Pi |
+| DB | SQLite | Pi |
+| LLM inference | Ollama + llama3.1:8b | Home machine (GPU) |
+| Email | Gmail API (OAuth2) | Internet |
+| Messaging | WhatsApp Business API | Internet |
