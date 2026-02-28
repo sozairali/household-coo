@@ -36,6 +36,14 @@ alwaysApply: true
 8.  **File Naming:** Use clear, descriptive names. Avoid "temp", "refactored", "improved", etc., in permanent file names.
 9.  **No One-Time Scripts:** Do not commit one-time utility scripts into the main codebase.
 
+## 🚫 Anti-Over-Engineering Guidelines
+
+1.  **Personal Use Focus:** This is not enterprise software. Ask "Would I write this for my own project?" before adding complexity.
+2.  **Prefer Simple Patterns:** Use functions over classes, dicts over dataclasses, strings over enums, and env vars over config systems.
+3.  **Size Guidelines:** Aim for files under 150 lines, functions under 20 lines, and minimal documentation.
+4.  **Avoid Enterprise Patterns:** Skip abstract classes, complex inheritance, design patterns, and logging frameworks unless explicitly needed.
+5.  **Question Abstractions:** Before creating classes/enums/patterns, verify they solve a real problem, not an imaginary future need.
+
 ## 🧪 Testing Requirements
 
 1.  **Module Testing:** For each module you write, create a separate test file (e.g., `moduleName.test.ts`) that tests the core functionality of that module.

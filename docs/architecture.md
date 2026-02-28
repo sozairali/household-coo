@@ -12,7 +12,7 @@ A simple task management system for busy parents. Built for both touchscreen (Ra
 ├─────────────────────────────────────────┤
 │  Frontend: React + TypeScript           │
 │  Backend: Python + FastAPI              │
-│  Database: PostgreSQL                   │
+│  Database: SQLite (local file)          │
 └─────────────────────────────────────────┘
 ```
 
@@ -22,7 +22,7 @@ A simple task management system for busy parents. Built for both touchscreen (Ra
 |-----------|--------|--------|
 | **Frontend** | React + TypeScript | Touch-friendly, type-safe |
 | **Backend** | Python + FastAPI | Excellent AI/ML ecosystem, simple API |
-| **Database** | PostgreSQL | Reliable, handles JSON |
+| **Database** | SQLite | Simple, no server setup, perfect for personal use |
 | **Deployment** | Single port | Easy Raspberry Pi setup |
 
 ## Key Components
@@ -40,10 +40,38 @@ A simple task management system for busy parents. Built for both touchscreen (Ra
 
 ### 3. Data Storage
 ```sql
--- Only 3 tables needed
-tasks (id, title, importance, urgency, savings, status)
-budget_transactions (id, type, amount, note)
-feedback (id, task_id, dimension, signal)
+-- SQLite tables for local storage
+CREATE TABLE tasks (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    source_type TEXT NOT NULL,
+    received_at TIMESTAMP NOT NULL,
+    due_at TIMESTAMP,
+    savings_usd REAL,
+    importance INTEGER NOT NULL DEFAULT 0,
+    urgency INTEGER NOT NULL DEFAULT 0,
+    savings_score INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'open',
+    actions TEXT,  -- JSON string for action links
+    citations TEXT  -- JSON string for citation links
+);
+
+CREATE TABLE budget_transactions (
+    id TEXT PRIMARY KEY,
+    type TEXT NOT NULL,
+    amount_usd REAL NOT NULL,
+    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    note TEXT
+);
+
+CREATE TABLE feedback (
+    id TEXT PRIMARY KEY,
+    task_id TEXT NOT NULL,
+    dimension TEXT NOT NULL,
+    signal INTEGER NOT NULL,
+    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 ## Input Methods

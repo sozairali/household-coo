@@ -84,8 +84,8 @@ Acceptance Criteria:
 
 ### 5.2 Technology Stack
 - **Frontend**: React + TypeScript + Vite + Tailwind CSS + Wouter + Zustand + Radix UI
-- **Backend**: Node.js + Express + TypeScript
-- **Database**: PostgreSQL + Drizzle ORM
+- **Backend**: Python + FastAPI + SQLAlchemy
+- **Database**: SQLite (local file-based)
 - **Infrastructure**: Single-port deployment
 
 ### 5.3 Integration Requirements
@@ -110,7 +110,7 @@ Acceptance Criteria:
   - WhatsApp → Webhook → Task creation → Database → Frontend display
   - User interaction → Frontend → Backend API → Database updates
 - **Data Storage**: 
-  - PostgreSQL for persistent data storage
+  - SQLite for persistent data storage (local file-based)
   - Local storage for client-side budget tracking
 
 ---

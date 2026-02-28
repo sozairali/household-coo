@@ -7,30 +7,30 @@ Tests the basic functionality with SQLite database.
 import os
 import pytest
 from unittest.mock import patch
-from database import get_database_url, test_connection, get_db
+from database import get_db
+from sqlalchemy import text
 
 
-def test_get_database_url():
-    """Test database URL generation."""
-    url = get_database_url()
-    assert url == "sqlite:///./household_coo.db"
+def test_get_db_returns_session():
+    """Happy path: get_db returns a usable SQLAlchemy session."""
+    db = get_db()
+    assert db is not None
+    db.close()
 
 
-def test_test_connection():
-    """Test connection test function."""
-    result = test_connection()
-    assert isinstance(result, bool)
+def test_get_db_can_query():
+    """Happy path: session can execute a basic SQL query."""
+    db = get_db()
+    result = db.execute(text("SELECT 1")).fetchone()
+    assert result is not None
+    db.close()
 
 
-def test_get_db():
-    """Test database session creation."""
-    try:
-        db = get_db()
-        assert db is not None
-        db.close()
-    except Exception:
-        # Expected to fail without real database
-        pass
+def test_get_db_closes_cleanly():
+    """Edge case: closing the session twice does not raise."""
+    db = get_db()
+    db.close()
+    db.close()  # second close must not raise
 
 
 if __name__ == "__main__":

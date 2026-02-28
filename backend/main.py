@@ -7,7 +7,7 @@ Just provides basic API endpoints for the frontend.
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from database import get_db, test_connection
+from database import get_db
 
 app = FastAPI(title="Household COO", version="1.0.0")
 
@@ -20,6 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Database is automatically initialized on import
+
 
 @app.get("/")
 def root():
@@ -28,12 +30,9 @@ def root():
 
 
 @app.get("/health")
-def health_check(db: Session = Depends(get_db)):
-    """Check if database is working."""
-    if test_connection():
-        return {"status": "healthy", "database": "connected"}
-    else:
-        return {"status": "unhealthy", "database": "disconnected"}
+def health_check():
+    """Simple health check."""
+    return {"status": "healthy", "message": "Household COO is running"}
 
 
 if __name__ == "__main__":
